@@ -4,17 +4,28 @@
  */
 package Pantallas;
 
+import db_conexion.cConexion;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author victor
  */
 public class IniciarSesion extends javax.swing.JFrame {
+    
+    Connection conn;
 
     /**
      * Creates new form IniciarSesion
      */
     public IniciarSesion() {
         initComponents();
+        
+        cConexion con = new cConexion();
+        conn = con.conexion();
     }
 
     /**
@@ -101,6 +112,36 @@ public class IniciarSesion extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        
+        String user = jTextField1.getText();
+        String pass = String.valueOf(jPasswordField1.getPassword());
+        int type_user = 0;
+       
+        String sql = "SELECT id_tipoUsuario FROM Usuario WHERE uLogin='"+user+"' AND passwd='"+pass+"'";
+            
+            try {
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                    if(rs.next()) {
+                        type_user = rs.getInt("id_tipoUsuario");
+                        if(type_user == 1) {
+                            JOptionPane.showMessageDialog(null, "Bienvenid@ ADMIN");
+                            ListarUsuarios llamada = new ListarUsuarios();
+                            llamada.setVisible(true);
+                            this.dispose();
+                        } else if(type_user >= 2) {
+                            JOptionPane.showMessageDialog(null, "Bienvenid@ ");
+                            Productos llamada = new Productos();
+                            llamada.setVisible(true);
+                            this.dispose();
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Nombre de Usuario y Contraseña no coinciden", " ¡¡ Acceso Denegado !!", JOptionPane.ERROR_MESSAGE);
+                    }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error: "+e.toString(), " ¡¡ ERROR !!", JOptionPane.ERROR_MESSAGE);
+            }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
