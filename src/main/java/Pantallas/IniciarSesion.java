@@ -73,6 +73,11 @@ public class IniciarSesion extends javax.swing.JFrame {
         });
 
         jButton3.setText("Registrarse");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarse(evt);
+            }
+        });
 
         jPasswordField1.setText("jPasswordField1");
 
@@ -126,7 +131,7 @@ public class IniciarSesion extends javax.swing.JFrame {
                         type_user = rs.getInt("id_tipoUsuario");
                         if(type_user == 1) {
                             JOptionPane.showMessageDialog(null, "Bienvenid@ ADMIN");
-                            ListarUsuarios llamada = new ListarUsuarios();
+                            Registarse llamada = new Registarse();
                             llamada.setVisible(true);
                             this.dispose();
                         } else if(type_user >= 2) {
@@ -143,6 +148,14 @@ public class IniciarSesion extends javax.swing.JFrame {
             }
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnRegistrarse(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarse
+        // TODO add your handling code here:
+        
+        Registarse llamada = new Registarse();
+        llamada.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRegistrarse
 
     /**
      * @param args the command line arguments

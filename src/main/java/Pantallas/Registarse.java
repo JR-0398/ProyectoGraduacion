@@ -4,6 +4,10 @@
  */
 package Pantallas;
 
+import com.modelo.usuario;
+import db_conexion.SqlUsuario;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author JUANJO
@@ -30,14 +34,14 @@ public class Registarse extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
+        txtApellido = new javax.swing.JTextField();
+        txtUsuario = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtPassword = new javax.swing.JPasswordField();
+        txtConfirmarPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -50,10 +54,16 @@ public class Registarse extends javax.swing.JFrame {
         jLabel4.setText("Contraseña");
 
         jButton1.setText("Completar registro");
+        jButton1.setActionCommand("CompletarRegistro");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CompletarRegistro(evt);
+            }
+        });
 
         jButton2.setText("Cancelar");
 
-        jLabel5.setText("Tipo de usuario");
+        jLabel6.setText("Confirmar Contraseña");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -62,26 +72,27 @@ public class Registarse extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addGap(37, 37, 37)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel6))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
-                            .addComponent(jTextField5)))
+                            .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
+                            .addComponent(txtApellido)
+                            .addComponent(txtUsuario)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtPassword, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtConfirmarPassword, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(138, 138, 138)
                         .addComponent(jButton1)
                         .addGap(18, 18, 18)
                         .addComponent(jButton2)))
-                .addContainerGap(105, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -89,24 +100,24 @@ public class Registarse extends javax.swing.JFrame {
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                    .addComponent(jLabel6)
+                    .addComponent(txtConfirmarPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -115,6 +126,64 @@ public class Registarse extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void limpiarcajas() {
+        txtNombre.setText(null);
+        txtApellido.setText(null);
+        txtUsuario.setText(null);
+        txtPassword.setText(null);
+        txtConfirmarPassword.setText(null);
+    }
+
+    private void CompletarRegistro(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CompletarRegistro
+        // TODO add your handling code here:
+
+        SqlUsuario modSql = new SqlUsuario();
+        usuario mod = new usuario();
+
+        String pass = new String(txtPassword.getPassword());
+        String passCon = new String(txtConfirmarPassword.getPassword());
+
+        if (txtUsuario.getText().equals("") || txtNombre.getText().equals("") //Validando campos vacios
+                || txtApellido.getText().equals("") || txtUsuario.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Hay campos vacios, debe completar todos los campos");
+        } else if (txtNombre.getText().length() < 6 //Validando los campos de nombre y apellido deben de ser mayor a 6
+                || txtApellido.getText().length() < 6) {
+            JOptionPane.showMessageDialog(null, "Los campos de Nombre y apellido deben de ser mayor a 6 caracteres");
+        } else if (txtUsuario.getText().length() < 8) {
+            JOptionPane.showMessageDialog(null, "El campo usuario debe de ser mayor a 7 caracteres");
+        } else {
+            if (pass.length() >= 8) { //Validando que la contraseña se mayor o igual a 10
+                if (pass.equals(passCon)) {
+                    if (modSql.existeUsuario(txtUsuario.getText()) == 0) { //Validando si el usuario existe
+                        mod.setuLogin(txtUsuario.getText());
+                        mod.setPasswd(pass);
+                        mod.setNombre(txtNombre.getText());
+                        mod.setApellido(txtApellido.getText());
+                        mod.setId_tipoUsuario(2);
+
+                        if (modSql.registrar(mod)) {
+                            limpiarcajas();
+                            JOptionPane.showMessageDialog(null, "El Usuario se creo con exito");
+                            IniciarSesion llamada = new IniciarSesion();
+                            llamada.setVisible(true);
+                            this.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error al guardar el usuario, revise la informacion.");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "El Usuario ya existe");
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "La contraseña no coincide");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "La contraseña debe de ser mayor a 7 caracteres");
+            }
+
+        }
+    }//GEN-LAST:event_CompletarRegistro
 
     /**
      * @param args the command line arguments
@@ -158,11 +227,11 @@ public class Registarse extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JTextField txtApellido;
+    private javax.swing.JPasswordField txtConfirmarPassword;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }
