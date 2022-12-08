@@ -60,5 +60,52 @@ public class ControlUsuario extends cConexion {
             return 1;
         }
     }
+   public void modificarInfoUsuario(usuario user) throws Exception{
+        PreparedStatement ps = null;
+        Connection con = conexion();
+
+        String sql = 
+        "UPDATE usuario SET  nombre=?, apellido=?,dui=?, passwd=?,telefono=?,direccion=?,cargo=? WHERE id_usuario=?";
+        try {
+            ps=con.prepareStatement(sql);
+            ps.setString(1,user.getNombre());
+            ps.setString(2,user.getApellido());	
+            ps.setString(3,user.getDui());
+            ps.setNString(4,user.getPasswd());
+            ps.setString(5,user.getTelefono());
+            ps.setString(6,user.getDireccion());
+            ps.setInt(7,user.getId_tipoUsuario());
+            ps.executeUpdate();
+            
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+   
+   
+   public void EliminarUsuario(usuario user) throws Exception{
+        PreparedStatement ps = null;
+        Connection con = conexion();
+
+        String sql = 
+        "DELETE * FROM usuario WHERE id_usuario=?";
+        try {
+            ps=con.prepareStatement(sql);
+            ps.setInt(1,user.getId_usuario());
+            ps.executeUpdate();
+            
+            
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+   
+//   public List MostrarUsuario() throws Exception{
+//       ResultSet res;
+//       List listarUsuario = new ArrayList();
+//       PreparedStatement ps =null;
+//       Connection con = conexion();
+//       
+//   }
      
 }
