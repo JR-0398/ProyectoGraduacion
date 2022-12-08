@@ -5,7 +5,7 @@
 package Pantallas;
 
 import com.modelo.usuario;
-import db_conexion.SqlUsuario;
+import com.dao.ControlUsuario;
 import javax.swing.JOptionPane;
 
 /**
@@ -138,7 +138,7 @@ public class Registarse extends javax.swing.JFrame {
     private void CompletarRegistro(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CompletarRegistro
         // TODO add your handling code here:
 
-        SqlUsuario modSql = new SqlUsuario();
+        ControlUsuario modSql = new ControlUsuario();
         usuario mod = new usuario();
 
         String pass = new String(txtPassword.getPassword());
@@ -151,7 +151,7 @@ public class Registarse extends javax.swing.JFrame {
                 || txtApellido.getText().length() < 6) {
             JOptionPane.showMessageDialog(null, "Los campos de Nombre y apellido deben de ser mayor a 6 caracteres");
         } else if (txtUsuario.getText().length() < 8) {
-            JOptionPane.showMessageDialog(null, "El campo usuario debe de ser mayor a 7 caracteres");
+            JOptionPane.showMessageDialog(null, "El campo usuario debe tener un rango de 7 a 10 caracteres");
         } else {
             if (pass.length() >= 8) { //Validando que la contraseña se mayor o igual a 10
                 if (pass.equals(passCon)) {

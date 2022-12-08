@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package db_conexion;
+package com.dao;
 
 import com.modelo.usuario;
+import db_conexion.cConexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author JUANJO
  */
-public class SqlUsuario extends cConexion {
+public class ControlUsuario extends cConexion {
 
     public boolean registrar(usuario usr) {
         PreparedStatement ps = null;
@@ -34,7 +35,7 @@ public class SqlUsuario extends cConexion {
             ps.execute();
             return true;
         } catch (SQLException e) {
-            Logger.getLogger(SqlUsuario.class.getName()).log(Level.SEVERE,null,e);
+            Logger.getLogger(ControlUsuario.class.getName()).log(Level.SEVERE,null,e);
             return false;
         }
     }
@@ -55,7 +56,7 @@ public class SqlUsuario extends cConexion {
             }
             return 1;
         } catch (SQLException e) {
-            Logger.getLogger(SqlUsuario.class.getName()).log(Level.SEVERE,null,e);
+            Logger.getLogger(ControlUsuario.class.getName()).log(Level.SEVERE,null,e);
             return 1;
         }
     }
