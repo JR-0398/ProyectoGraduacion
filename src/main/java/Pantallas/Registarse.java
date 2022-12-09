@@ -8,6 +8,7 @@ import com.modelo.usuario;
 import com.dao.ControlUsuario;
 import javax.swing.JOptionPane;
 
+
 /**
  *
  * @author JUANJO
@@ -30,23 +31,6 @@ public class Registarse extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-<<<<<<< HEAD
-        jSeparator1 = new javax.swing.JSeparator();
-        jSpinner1 = new javax.swing.JSpinner();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-=======
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -59,86 +43,8 @@ public class Registarse extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JPasswordField();
         txtConfirmarPassword = new javax.swing.JPasswordField();
->>>>>>> main
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Registro");
-
-        jLabel1.setText("* Nombre:");
-
-        jLabel2.setText("* Correo:");
-
-        jLabel3.setText("* Contraseña:");
-
-        jLabel4.setText("* Reescribir Contraseña:");
-
-        jCheckBox1.setText("Acepta los Términos de uso y la politica de privacidad.");
-
-        jButton1.setText("Registrarse");
-
-        jButton2.setText("Leer mas");
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("Registro");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jCheckBox1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(79, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel6)
-                .addGap(241, 241, 241))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel6)
-                .addGap(45, 45, 45)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37)
-                .addComponent(jCheckBox1)
-                .addGap(40, 40, 40)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
 
         jLabel1.setText("Nombre");
 
@@ -165,18 +71,6 @@ public class Registarse extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-<<<<<<< HEAD
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-=======
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -229,19 +123,10 @@ public class Registarse extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addComponent(jButton2))
                 .addGap(47, 47, 47))
->>>>>>> main
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void limpiarcajas() {
-        txtNombre.setText(null);
-        txtApellido.setText(null);
-        txtUsuario.setText(null);
-        txtPassword.setText(null);
-        txtConfirmarPassword.setText(null);
-    }
 
     private void CompletarRegistro(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CompletarRegistro
         // TODO add your handling code here:
@@ -252,42 +137,39 @@ public class Registarse extends javax.swing.JFrame {
         String pass = new String(txtPassword.getPassword());
         String passCon = new String(txtConfirmarPassword.getPassword());
 
-        if (txtUsuario.getText().equals("") || txtNombre.getText().equals("") //Validando campos vacios
+        if (txtUsuario.getText().equals("") || txtNombre.getText().equals("")
                 || txtApellido.getText().equals("") || txtUsuario.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Hay campos vacios, debe completar todos los campos");
-        } else if (txtNombre.getText().length() < 6 //Validando los campos de nombre y apellido deben de ser mayor a 6
-                || txtApellido.getText().length() < 6) {
+        } 
+        
+        else if(txtNombre.getText().length()<6 || 
+                txtApellido.getText().length()<6){
             JOptionPane.showMessageDialog(null, "Los campos de Nombre y apellido deben de ser mayor a 6 caracteres");
-        } else if (txtUsuario.getText().length() < 8) {
-            JOptionPane.showMessageDialog(null, "El campo usuario debe tener un rango de 7 a 10 caracteres");
-        } else {
-            if (pass.length() >= 8) { //Validando que la contraseña se mayor o igual a 10
+        } 
+        else if(txtUsuario.getText().length()<8)
+        {
+            JOptionPane.showMessageDialog(null, "El campo usuario debe de ser mayor a 7 caracteres");
+        }
+        else {
+            if (pass.length() >= 10){
                 if (pass.equals(passCon)) {
-                    if (modSql.existeUsuario(txtUsuario.getText()) == 0) { //Validando si el usuario existe
-                        mod.setuLogin(txtUsuario.getText());
-                        mod.setPasswd(pass);
-                        mod.setNombre(txtNombre.getText());
-                        mod.setApellido(txtApellido.getText());
-                        mod.setId_tipoUsuario(2);
+                    mod.setuLogin(txtUsuario.getText());
+                    mod.setPasswd(pass);
+                    mod.setNombre(txtNombre.getText());
+                    mod.setApellido(txtApellido.getText());
+                    mod.setId_tipoUsuario(2);
 
-                        if (modSql.registrar(mod)) {
-                            limpiarcajas();
-                            JOptionPane.showMessageDialog(null, "El Usuario se creo con exito");
-                            IniciarSesion llamada = new IniciarSesion();
-                            llamada.setVisible(true);
-                            this.dispose();
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Error al guardar el usuario, revise la informacion.");
-                        }
+                    if (modSql.registrar(mod)) {
+                        JOptionPane.showMessageDialog(null, "El Usuario se creo con exito");
                     } else {
-                        JOptionPane.showMessageDialog(null, "El Usuario ya existe");
+                        JOptionPane.showMessageDialog(null, "Error al guardar el usuario, revise la informacion.");
                     }
-
                 } else {
                     JOptionPane.showMessageDialog(null, "La contraseña no coincide");
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "La contraseña debe de ser mayor a 7 caracteres");
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "La contraseña debe de ser mayor a 9 caracteres");
             }
 
         }
@@ -331,29 +213,15 @@ public class Registarse extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-<<<<<<< HEAD
-    private javax.swing.JCheckBox jCheckBox1;
-=======
->>>>>>> main
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
-<<<<<<< HEAD
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-=======
     private javax.swing.JTextField txtApellido;
     private javax.swing.JPasswordField txtConfirmarPassword;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsuario;
->>>>>>> main
     // End of variables declaration//GEN-END:variables
 }

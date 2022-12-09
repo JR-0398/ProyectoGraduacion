@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -99,13 +101,30 @@ public class ControlUsuario extends cConexion {
             throw e;
         }
     }
-   
-//   public List MostrarUsuario() throws Exception{
-//       ResultSet res;
-//       List listarUsuario = new ArrayList();
-//       PreparedStatement ps =null;
-//       Connection con = conexion();
-//       
-//   }
+   public List<?> MostrarUsuarios() {
+       ResultSet res;
+       List <usuario> data = new ArrayList<>();
+       PreparedStatement ps =null;
+       Connection con = conexion();
+       String sql="SELECT nombre,apellido,dui,uLogin,telefono,direccion,cargo FROM usuario";
+       try {
+           ps=con.prepareStatement(sql);
+           res=ps.executeQuery();
+           while (res.next()) {
+               usuario user = new usuario();
+               user.setNombre(res.getString("nombre"));
+               user.setApellido(res.getString("apellido"));
+               user.setDui(res.getString("dui"));
+               user.setuLogin(res.getString("uLogin"));
+               user.setTelefono(res.getString("telefono"));
+               user.setDireccion(res.getString("direccion"));
+               user.setCargo(res.getString("cargo"));
+               data.add(user);
+           }
+       } catch (SQLException e) {
+           System.out.println("Exepciones controladas");
+       }
+        return data;
+   }
      
 }
