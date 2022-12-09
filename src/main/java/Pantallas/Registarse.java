@@ -5,8 +5,9 @@
 package Pantallas;
 
 import com.modelo.usuario;
-import db_conexion.SqlUsuario;
+import com.dao.ControlUsuario;
 import javax.swing.JOptionPane;
+
 
 /**
  *
@@ -127,59 +128,48 @@ public class Registarse extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void limpiarcajas() {
-        txtNombre.setText(null);
-        txtApellido.setText(null);
-        txtUsuario.setText(null);
-        txtPassword.setText(null);
-        txtConfirmarPassword.setText(null);
-    }
-
     private void CompletarRegistro(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CompletarRegistro
         // TODO add your handling code here:
 
-        SqlUsuario modSql = new SqlUsuario();
+        ControlUsuario modSql = new ControlUsuario();
         usuario mod = new usuario();
 
         String pass = new String(txtPassword.getPassword());
         String passCon = new String(txtConfirmarPassword.getPassword());
 
-        if (txtUsuario.getText().equals("") || txtNombre.getText().equals("") //Validando campos vacios
+        if (txtUsuario.getText().equals("") || txtNombre.getText().equals("")
                 || txtApellido.getText().equals("") || txtUsuario.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Hay campos vacios, debe completar todos los campos");
-        } else if (txtNombre.getText().length() < 6 //Validando los campos de nombre y apellido deben de ser mayor a 6
-                || txtApellido.getText().length() < 6) {
+        } 
+        
+        else if(txtNombre.getText().length()<6 || 
+                txtApellido.getText().length()<6){
             JOptionPane.showMessageDialog(null, "Los campos de Nombre y apellido deben de ser mayor a 6 caracteres");
-        } else if (txtUsuario.getText().length() < 8) {
+        } 
+        else if(txtUsuario.getText().length()<8)
+        {
             JOptionPane.showMessageDialog(null, "El campo usuario debe de ser mayor a 7 caracteres");
-        } else {
-            if (pass.length() >= 8) { //Validando que la contraseña se mayor o igual a 10
+        }
+        else {
+            if (pass.length() >= 10){
                 if (pass.equals(passCon)) {
-                    if (modSql.existeUsuario(txtUsuario.getText()) == 0) { //Validando si el usuario existe
-                        mod.setuLogin(txtUsuario.getText());
-                        mod.setPasswd(pass);
-                        mod.setNombre(txtNombre.getText());
-                        mod.setApellido(txtApellido.getText());
-                        mod.setId_tipoUsuario(2);
+                    mod.setuLogin(txtUsuario.getText());
+                    mod.setPasswd(pass);
+                    mod.setNombre(txtNombre.getText());
+                    mod.setApellido(txtApellido.getText());
+                    mod.setId_tipoUsuario(2);
 
-                        if (modSql.registrar(mod)) {
-                            limpiarcajas();
-                            JOptionPane.showMessageDialog(null, "El Usuario se creo con exito");
-                            IniciarSesion llamada = new IniciarSesion();
-                            llamada.setVisible(true);
-                            this.dispose();
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Error al guardar el usuario, revise la informacion.");
-                        }
+                    if (modSql.registrar(mod)) {
+                        JOptionPane.showMessageDialog(null, "El Usuario se creo con exito");
                     } else {
-                        JOptionPane.showMessageDialog(null, "El Usuario ya existe");
+                        JOptionPane.showMessageDialog(null, "Error al guardar el usuario, revise la informacion.");
                     }
-
                 } else {
                     JOptionPane.showMessageDialog(null, "La contraseña no coincide");
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "La contraseña debe de ser mayor a 7 caracteres");
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "La contraseña debe de ser mayor a 9 caracteres");
             }
 
         }

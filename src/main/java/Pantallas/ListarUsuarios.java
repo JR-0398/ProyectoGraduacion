@@ -4,17 +4,51 @@
  */
 package Pantallas;
 
+import com.dao.ControlUsuario;
+import com.modelo.usuario;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author victor
  */
 public class ListarUsuarios extends javax.swing.JFrame {
 
+    String[] columnas = {"NOMBRE", "APELLIDO", "DUI", "USUARIO", "TELEFONO", "DIRECCIÓN", "CARGO"};
+    DefaultTableModel model = new DefaultTableModel(columnas,0);
+    ControlUsuario controlUsu = new ControlUsuario();
+    List<usuario> datos = new ArrayList<>();
+    usuario usr = new usuario();
+
+    public void cargarTablaUsuarios() {
+        tableListUsuarios.getTableHeader().setReorderingAllowed(false);
+        model.setRowCount(0);
+        datos.clear();
+        datos = (List<usuario>) controlUsu.MostrarUsuarios();
+        Object[] obj = new Object[7];
+        for (usuario fila : datos) {
+            obj[0] = fila.getNombre();
+            obj[1] = fila.getApellido();
+            obj[2] = fila.getDui();
+            obj[3] = fila.getuLogin();
+            obj[4] = fila.getTelefono();
+            obj[5] = fila.getDireccion();
+            obj[6] = fila.getCargo();
+            model.addRow(obj);
+        }
+        tableListUsuarios.setModel(model);
+    }
+
     /**
      * Creates new form ListarUsuarios
      */
     public ListarUsuarios() {
         initComponents();
+        cargarTablaUsuarios();
     }
 
     /**
@@ -29,12 +63,12 @@ public class ListarUsuarios extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        tableListUsuarios = new javax.swing.JTable();
+        btnEditar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
 
@@ -42,28 +76,36 @@ public class ListarUsuarios extends javax.swing.JFrame {
 
         jLabel1.setText("Lista de Usuarios");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableListUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Nombre", "Apellido", "Usuario", "Contraseña"
+                "Nombre", "Apellido", "Usuario", "Contraseña", "Title 5", "Title 6", "Title 7"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tableListUsuarios);
 
-        jButton2.setText("Editar");
+        btnEditar.setText("Editar");
 
-        jButton3.setText("Eliminar");
+        btnEliminar.setText("Eliminar");
 
-        jButton1.setText("Buscar");
+        btnBuscar.setText("Buscar");
 
-        jButton4.setText("Guardar");
+        btnGuardar.setText("Guardar");
 
-        jButton5.setText("Cancelar");
+        btnCancelar.setText("Cancelar");
 
         jLabel2.setText("Usuario:");
 
@@ -88,17 +130,17 @@ public class ListarUsuarios extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
-                        .addComponent(jButton1)
+                        .addComponent(btnBuscar)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2)
+                        .addComponent(btnEditar)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3)
+                        .addComponent(btnEliminar)
                         .addGap(17, 17, 17))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton5)
+                .addComponent(btnCancelar)
                 .addGap(18, 18, 18)
-                .addComponent(jButton4)
+                .addComponent(btnGuardar)
                 .addGap(23, 23, 23))
         );
         layout.setVerticalGroup(
@@ -110,17 +152,17 @@ public class ListarUsuarios extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton1)
+                    .addComponent(btnEditar)
+                    .addComponent(btnEliminar)
+                    .addComponent(btnBuscar)
                     .addComponent(jLabel2)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(26, 26, 26)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(136, 136, 136)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5))
+                    .addComponent(btnGuardar)
+                    .addComponent(btnCancelar))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
@@ -157,22 +199,26 @@ public class ListarUsuarios extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ListarUsuarios().setVisible(true);
+                try {
+                    new ListarUsuarios().setVisible(true);
+                } catch (Exception ex) {
+                    Logger.getLogger(ListarUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tableListUsuarios;
     // End of variables declaration//GEN-END:variables
 }
