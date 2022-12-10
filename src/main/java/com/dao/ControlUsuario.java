@@ -26,7 +26,7 @@ public class ControlUsuario extends cConexion {
         Connection con = conexion();
 
         String sql = 
-        "INSERT INTO usuario (nombre, apellido, uLogin,passwd,id_tipoUsuario) VALUES(?,?,?,?,?)";
+        "INSERT INTO usuario (nombre, apellido, uLogin,passwd,id_tipoUsuario,dui,telefono,direccion,cargo) VALUES(?,?,?,?,?,?,?,?,?)";  //enviar informacion de dui nula
         try {
             ps= con.prepareStatement(sql);
             ps.setString(1,usr.getNombre());
@@ -34,7 +34,12 @@ public class ControlUsuario extends cConexion {
             ps.setString(3,usr.getuLogin());
             ps.setString(4,usr.getPasswd());
             ps.setInt(5,usr.getId_tipoUsuario());
+            ps.setString(6, usr.getDui());
+            ps.setString(7, usr.getTelefono());
+            ps.setString(8, usr.getDireccion());
+            ps.setString(9, usr.getCargo());
             ps.execute();
+            con.close();
             return true;
         } catch (SQLException e) {
             Logger.getLogger(ControlUsuario.class.getName()).log(Level.SEVERE,null,e);
@@ -56,6 +61,8 @@ public class ControlUsuario extends cConexion {
             if (rs.next()) {
                 return rs.getInt(1);
             }
+            con.close();
+            rs.close();
             return 1;
         } catch (SQLException e) {
             Logger.getLogger(ControlUsuario.class.getName()).log(Level.SEVERE,null,e);
@@ -78,7 +85,7 @@ public class ControlUsuario extends cConexion {
             ps.setString(6,user.getDireccion());
             ps.setInt(7,user.getId_tipoUsuario());
             ps.executeUpdate();
-            
+            con.close();
         } catch (Exception e) {
             throw e;
         }
@@ -95,7 +102,7 @@ public class ControlUsuario extends cConexion {
             ps=con.prepareStatement(sql);
             ps.setInt(1,user.getId_usuario());
             ps.executeUpdate();
-            
+            con.close();
             
         } catch (Exception e) {
             throw e;
@@ -106,7 +113,7 @@ public class ControlUsuario extends cConexion {
        List <usuario> data = new ArrayList<>();
        PreparedStatement ps =null;
        Connection con = conexion();
-       String sql="SELECT nombre,apellido,dui,uLogin,telefono,direccion,cargo FROM usuario";
+       String sql="SELECT nombre,apellido,dui,uLogin,passwd,telefono,direccion,cargo FROM usuario";
        try {
            ps=con.prepareStatement(sql);
            res=ps.executeQuery();
@@ -116,11 +123,14 @@ public class ControlUsuario extends cConexion {
                user.setApellido(res.getString("apellido"));
                user.setDui(res.getString("dui"));
                user.setuLogin(res.getString("uLogin"));
+               user.setPasswd(res.getString("passwd"));
                user.setTelefono(res.getString("telefono"));
                user.setDireccion(res.getString("direccion"));
                user.setCargo(res.getString("cargo"));
                data.add(user);
            }
+           con.close();
+           res.close();
        } catch (SQLException e) {
            System.out.println("Exepciones controladas");
        }

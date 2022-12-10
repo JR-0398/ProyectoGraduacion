@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -18,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ListarUsuarios extends javax.swing.JFrame {
 
-    String[] columnas = {"NOMBRE", "APELLIDO", "DUI", "USUARIO", "TELEFONO", "DIRECCIÓN", "CARGO"};
+    String[] columnas = {"NOMBRE", "APELLIDO", "DUI", "USUARIO", "CONTRASEÑA", "TELEFONO", "DIRECCIÓN", "CARGO"};
 
     ControlUsuario controlUsu = new ControlUsuario();
     List<usuario> datos = new ArrayList<>();
@@ -26,7 +27,7 @@ public class ListarUsuarios extends javax.swing.JFrame {
 
     DefaultTableModel model = new DefaultTableModel(columnas, 0) { //Para que las celdas no sean editables a traves del modelo
         public boolean isCellEditable(int filas, int columnas) {
-            if (columnas == 6) {
+            if (columnas == 7) {
                 return true;
             } else {
                 return false;
@@ -39,18 +40,54 @@ public class ListarUsuarios extends javax.swing.JFrame {
         model.setRowCount(0);
         datos.clear();
         datos = (List<usuario>) controlUsu.MostrarUsuarios();
-        Object[] obj = new Object[7];
+        Object[] obj = new Object[8];
         for (usuario fila : datos) {
             obj[0] = fila.getNombre();
             obj[1] = fila.getApellido();
             obj[2] = fila.getDui();
             obj[3] = fila.getuLogin();
-            obj[4] = fila.getTelefono();
-            obj[5] = fila.getDireccion();
-            obj[6] = fila.getCargo();
+            obj[4] = fila.getPasswd();
+            obj[5] = fila.getTelefono();
+            obj[6] = fila.getDireccion();
+            obj[7] = fila.getCargo();
             model.addRow(obj);
         }
         tableListUsuarios.setModel(model);
+        
+        
+    }
+    
+    public void limpiarCampos(){
+        this.txtApellido.setText("");
+        this.txtCargo.setText("");
+        this.txtContra.setText("");
+        this.txtDireccion.setText("");
+        this.txtDui.setText("");
+        this.txtNombre.setText("");
+        this.txtTelefono.setText("");
+        this.txtUsuario.setText("");
+    }
+    
+    public  void jTextBloqueados()
+    {
+    txtNombre.setEnabled(false);
+    txtApellido.setEnabled(false);
+    txtCargo.setEnabled(false);
+    txtContra.setEnabled(false);
+    txtDireccion.setEnabled(false);
+    txtDui.setEnabled(false);
+    txtTelefono.setEnabled(false);
+    txtUsuario.setEnabled(false);
+    }
+    public  void jTextEditables(){
+    txtNombre.setEnabled(true);
+    txtApellido.setEnabled(true);
+    txtCargo.setEnabled(true);
+    txtContra.setEnabled(true);
+    txtDireccion.setEnabled(true);
+    txtDui.setEnabled(true);
+    txtTelefono.setEnabled(true);
+    txtUsuario.setEnabled(true);
     }
 
     /**
@@ -60,6 +97,8 @@ public class ListarUsuarios extends javax.swing.JFrame {
         initComponents();
         cargarTablaUsuarios();
         setLocationRelativeTo(null);
+        jTextBloqueados();
+        
     }
 
     /**
@@ -115,9 +154,19 @@ public class ListarUsuarios extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7"
             }
         ));
+        tableListUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableListUsuariosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableListUsuarios);
 
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setText("Eliminar");
 
@@ -151,6 +200,11 @@ public class ListarUsuarios extends javax.swing.JFrame {
         jLabel9.setText("Cargo:");
 
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
 
@@ -162,7 +216,7 @@ public class ListarUsuarios extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(67, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
@@ -242,34 +296,34 @@ public class ListarUsuarios extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 822, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnBuscar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnEditar)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnEliminar))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(344, 344, 344)
-                        .addComponent(jLabel1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnBuscar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEditar)
+                        .addGap(35, 35, 35)
+                        .addComponent(btnEliminar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 795, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -290,6 +344,52 @@ public class ListarUsuarios extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tableListUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableListUsuariosMouseClicked
+        // TODO add your handling code here:
+//        int fila = this.tableListUsuarios.getSelectedRow();
+//        this.txtNombre.setText(tableListUsuarios.getValueAt(tableListUsuarios.getSelectedRow(), 0).toString());
+//        this.txtApellido.setText(tableListUsuarios.getValueAt(tableListUsuarios.getSelectedRow(), 1).toString());
+//        this.txtCargo.setText(tableListUsuarios.getValueAt(tableListUsuarios.getSelectedRow(), 1).toString());
+    }//GEN-LAST:event_tableListUsuariosMouseClicked
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+        int fila = this.tableListUsuarios.getSelectedRow();
+
+        if (fila >= 0) {
+            jTextEditables();
+            
+            
+            this.txtNombre.setText(this.tableListUsuarios.getValueAt(fila, 0).toString());
+            this.txtApellido.setText(this.tableListUsuarios.getValueAt(fila, 1).toString());
+            this.txtDui.setText(this.tableListUsuarios.getValueAt(fila, 2).toString());
+            this.txtUsuario.setText(this.tableListUsuarios.getValueAt(fila, 3).toString());
+            this.txtContra.setText(this.tableListUsuarios.getValueAt(fila, 4).toString());
+            this.txtTelefono.setText(this.tableListUsuarios.getValueAt(fila, 5).toString());
+            this.txtDireccion.setText(this.tableListUsuarios.getValueAt(fila, 6).toString());
+            this.txtCargo.setText(this.tableListUsuarios.getValueAt(fila, 7).toString());
+           /* if (!this.tableListUsuarios.getValueAt(fila, 2).toString().isEmpty()) {
+                this.txtDui.setText(this.tableListUsuarios.getValueAt(fila, 2).toString());
+            }
+            else{
+                
+            }
+            */
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione una usuario de la tabla para poder editar su información");
+            
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        // TODO add your handling code here:
+        if (txtNombre.getText().equals("") || txtApellido.getText().equals("") 
+                || txtContra.getText().equals("") || txtUsuario.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Los campos nombre, apellido, usuario y contraseña son obligatorios");
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
     /**
      * @param args the command line arguments

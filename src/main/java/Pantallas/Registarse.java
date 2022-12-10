@@ -153,20 +153,34 @@ public class Registarse extends javax.swing.JFrame {
         else {
             if (pass.length() >= 10){
                 if (pass.equals(passCon)) {
+                   if(modSql.existeUsuario(txtUsuario.getText())==0){ //Validamos que no existan usuarios duplicados
                     mod.setuLogin(txtUsuario.getText());
                     mod.setPasswd(pass);
                     mod.setNombre(txtNombre.getText());
                     mod.setApellido(txtApellido.getText());
                     mod.setId_tipoUsuario(2);
+                    mod.setDui(" ");
+                    mod.setTelefono(" ");
+                    mod.setDireccion(" ");
+                    mod.setCargo(" ");
+                    
+                    
 
                     if (modSql.registrar(mod)) {
                         JOptionPane.showMessageDialog(null, "El Usuario se creo con exito");
                     } else {
                         JOptionPane.showMessageDialog(null, "Error al guardar el usuario, revise la informacion.");
                     }
-                } else {
+                   }
+                   else{
+                   JOptionPane.showMessageDialog(null, "El usuario ya existe");}
+                } 
+                else {
                     JOptionPane.showMessageDialog(null, "La contraseña no coincide");
                 }
+                
+                
+                
             }
             else{
                 JOptionPane.showMessageDialog(null, "La contraseña debe de ser mayor a 9 caracteres");
