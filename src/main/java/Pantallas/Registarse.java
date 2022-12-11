@@ -141,7 +141,6 @@ public class Registarse extends javax.swing.JFrame {
                 || txtApellido.getText().equals("") || txtUsuario.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Hay campos vacios, debe completar todos los campos");
         } 
-        
         else if(txtNombre.getText().length()<6 || 
                 txtApellido.getText().length()<6){
             JOptionPane.showMessageDialog(null, "Los campos de Nombre y apellido deben de ser mayor a 6 caracteres");
@@ -162,10 +161,7 @@ public class Registarse extends javax.swing.JFrame {
                     mod.setDui(" ");
                     mod.setTelefono(" ");
                     mod.setDireccion(" ");
-                    mod.setCargo(" ");
-                    
-                    
-
+                    mod.setCargo(" ");                                      
                     if (modSql.registrar(mod)) {
                         JOptionPane.showMessageDialog(null, "El Usuario se creo con exito");
                     } else {
@@ -177,15 +173,11 @@ public class Registarse extends javax.swing.JFrame {
                 } 
                 else {
                     JOptionPane.showMessageDialog(null, "La contraseña no coincide");
-                }
-                
-                
-                
+                }                                                
             }
             else{
                 JOptionPane.showMessageDialog(null, "La contraseña debe de ser mayor a 9 caracteres");
             }
-
         }
     }//GEN-LAST:event_CompletarRegistro
 

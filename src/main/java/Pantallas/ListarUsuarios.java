@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,6 +19,9 @@ import javax.swing.table.DefaultTableModel;
  * @author victor
  */
 public class ListarUsuarios extends javax.swing.JFrame {
+    
+    private JButton btnCrearUsuNuevo;
+    private JButton btnEditarInfoUsu;
 
     String[] columnas = {"NOMBRE", "APELLIDO", "DUI", "USUARIO", "CONTRASEÑA", "TELEFONO", "DIRECCIÓN", "CARGO"};
 
@@ -117,7 +121,7 @@ public class ListarUsuarios extends javax.swing.JFrame {
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        txtBuscar = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -138,6 +142,8 @@ public class ListarUsuarios extends javax.swing.JFrame {
         btnCancelar = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
+        btnCrearUsuario = new javax.swing.JButton();
+        panelBotones = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -169,6 +175,11 @@ public class ListarUsuarios extends javax.swing.JFrame {
         });
 
         btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         btnBuscar.setText("Buscar");
 
@@ -222,11 +233,6 @@ public class ListarUsuarios extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addGap(175, 175, 175))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnCancelar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnGuardar)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel5)
                             .addComponent(jLabel4)
@@ -245,7 +251,11 @@ public class ListarUsuarios extends javax.swing.JFrame {
                             .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtDui, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtContra, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnCancelar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnGuardar)))
                         .addGap(44, 44, 44))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -284,11 +294,29 @@ public class ListarUsuarios extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnCancelar))
-                .addContainerGap())
+                    .addComponent(btnCancelar)
+                    .addComponent(btnGuardar))
+                .addContainerGap(100, Short.MAX_VALUE))
+        );
+
+        btnCrearUsuario.setText("Crear Usuario");
+        btnCrearUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearUsuarioActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelBotonesLayout = new javax.swing.GroupLayout(panelBotones);
+        panelBotones.setLayout(panelBotonesLayout);
+        panelBotonesLayout.setHorizontalGroup(
+            panelBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        panelBotonesLayout.setVerticalGroup(
+            panelBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 32, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -302,10 +330,12 @@ public class ListarUsuarios extends javax.swing.JFrame {
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnBuscar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCrearUsuario)
+                        .addGap(40, 40, 40)
                         .addComponent(btnEditar)
                         .addGap(35, 35, 35)
                         .addComponent(btnEliminar))
@@ -315,7 +345,9 @@ public class ListarUsuarios extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelBotones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -323,18 +355,21 @@ public class ListarUsuarios extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(16, 16, 16)
+                        .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(50, 50, 50)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnBuscar)
                                     .addComponent(btnEditar)
-                                    .addComponent(btnEliminar)))
+                                    .addComponent(btnEliminar)
+                                    .addComponent(btnCrearUsuario)))
                             .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1))
@@ -356,7 +391,7 @@ public class ListarUsuarios extends javax.swing.JFrame {
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
         int fila = this.tableListUsuarios.getSelectedRow();
-
+        
         if (fila >= 0) {
             jTextEditables();
             
@@ -376,6 +411,8 @@ public class ListarUsuarios extends javax.swing.JFrame {
                 
             }
             */
+           
+           
 
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione una usuario de la tabla para poder editar su información");
@@ -385,11 +422,80 @@ public class ListarUsuarios extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
-        if (txtNombre.getText().equals("") || txtApellido.getText().equals("") 
-                || txtContra.getText().equals("") || txtUsuario.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Los campos nombre, apellido, usuario y contraseña son obligatorios");
+//        if (txtNombre.getText().equals("") || txtApellido.getText().equals("") 
+//                || txtContra.getText().equals("") || txtUsuario.getText().equals("")) {
+//            JOptionPane.showMessageDialog(null, "Los campos nombre, apellido, usuario y contraseña son obligatorios");
+//        }
+
+        
+        
+
+        String pass = new String(this.txtContra.getText()); 
+
+        if (txtUsuario.getText().equals("") || txtNombre.getText().equals("")
+                || txtApellido.getText().equals("") || txtUsuario.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Hay campos vacios, debe completar todos los campos");
+        } 
+        else if(txtNombre.getText().length()<6 || 
+                txtApellido.getText().length()<6){
+            JOptionPane.showMessageDialog(null, "Los campos de Nombre y apellido deben de ser mayor a 6 caracteres");
+        } 
+        else if(txtUsuario.getText().length()<8)
+        {
+            JOptionPane.showMessageDialog(null, "El campo usuario debe de ser mayor a 7 caracteres");
         }
+        else {
+            if (pass.length() >= 10){     
+                   if(controlUsu.existeUsuario(txtUsuario.getText())==0){ //Validamos que no existan usuarios duplicados
+                    usr.setuLogin(txtUsuario.getText());
+                    usr.setPasswd(pass);
+                    usr.setNombre(txtNombre.getText());
+                    usr.setApellido(txtApellido.getText());
+                    usr.setId_tipoUsuario(2);
+                    usr.setDui(" ");
+                    usr.setTelefono(" ");
+                    usr.setDireccion(" ");
+                    usr.setCargo(" ");                                      
+                    if (controlUsu.registrar(usr)) {
+                        JOptionPane.showMessageDialog(null, "El Usuario se creo con exito");
+                        jTextBloqueados();
+                        limpiarCampos();
+                        cargarTablaUsuarios();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al guardar el usuario, revise la informacion.");
+                    }
+                   }
+                   else{
+                   JOptionPane.showMessageDialog(null, "El usuario ya existe");}                                               
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "La contraseña debe de ser mayor a 9 caracteres");
+            }
+        }
+        
+        
+        
+        
+        
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearUsuarioActionPerformed
+        // TODO add your handling code here:
+        jTextEditables();
+        limpiarCampos();
+    }//GEN-LAST:event_btnCrearUsuarioActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+         int fila = this.tableListUsuarios.getSelectedRow();
+        if (fila >= 0) {
+            jTextEditables();
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione una usuario de la tabla para poder editar su información");
+            
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -433,6 +539,7 @@ public class ListarUsuarios extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnCrearUsuario;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
@@ -449,9 +556,10 @@ public class ListarUsuarios extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPanel panelBotones;
     private javax.swing.JTable tableListUsuarios;
     private javax.swing.JTextField txtApellido;
+    private javax.swing.JTextField txtBuscar;
     private javax.swing.JTextField txtCargo;
     private javax.swing.JTextField txtContra;
     private javax.swing.JTextField txtDireccion;
