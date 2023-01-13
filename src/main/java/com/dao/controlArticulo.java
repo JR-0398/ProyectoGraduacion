@@ -12,55 +12,96 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Banos
  */
 public class controlArticulo extends cConexion {
-    articulo art = new articulo();
+    /*articulo art = new articulo();
     Connection con = conexion();
     List <articulo> datos = new ArrayList<>();
     String sql = "";
     PreparedStatement ps;
-    ResultSet res;
+    ResultSet res;*/
    
     public List<?> mostrarArticulos() {
-       this.sql = "SELECT * FROM articulo";
-       try {
-           this.ps = this.con.prepareStatement(this.sql);
-           this.res = this.ps.executeQuery();
-           while (this.res.next()) {
-               this.datos.add(new articulo(
-                       this.res.getInt("id_articulo"),
-                       this.res.getString("codigo"),
-                       this.res.getString("nombreArt"),
-                       this.res.getInt("cantidad"),
-                       this.res.getString("estado"),
-                       this.res.getInt("id_usuario"),
-                       this.res.getInt("id_categoria")
-               ));
-           }
-           //this.con.close();
-           //this.res.close();
-       }catch (SQLException e){
-           System.out.println("Excepciones controladas: "+e.getMessage());
-       }
-       return this.datos;            
+        Connection con = conexion();
+        PreparedStatement ps;
+        ResultSet res;
+        List <articulo> datos = new ArrayList<>();
+        
+        String sql = "SELECT id_articulo, artCodigo, artNombre, artCantidad, artEstado, artComentario, id_usuario, id_categoria FROM articulo";
+        try {
+            ps = con.prepareStatement(sql);
+            res = ps.executeQuery();
+            while (res.next()) {
+                datos.add(new articulo(
+                        res.getInt("id_articulo"),
+                        res.getString("artCodigo"),
+                        res.getString("artNombre"),
+                        res.getInt("artCantidad"),
+                        res.getString("artEstado"),
+                        res.getString("artComentario"),
+                        res.getInt("id_usuario"),
+                        res.getInt("id_categoria")));
+            }
+            con.close();
+            res.close();
+        }catch (SQLException e){
+            System.out.println("Excepciones controladas: "+e.getMessage());
+        }
+        return datos;
+    }
+    
+    public List<?> buscarArticulo(String Buscar) {
+        Connection con = conexion();
+        PreparedStatement ps;
+        ResultSet res;
+        List <articulo> datos = new ArrayList<>();
+        
+        String sql = "SELECT id_articulo, artCodigo, artNombre, artCantidad, artEstado, artComentario, id_usuario, id_categoria FROM articulo WHERE artCodigo LIKE '%"+Buscar+"%' OR artNombre LIKE '%"+Buscar+"%'";
+        try {
+            ps = con.prepareStatement(sql);
+            res = ps.executeQuery();
+            while (res.next()) {
+                articulo art = new articulo();
+                art.setId_articulo(res.getInt("id_articulo"));
+                art.setArtCodigo(res.getString("artCodigo"));
+                art.setArtNombre(res.getString("artNombre"));
+                art.setArtCantidad(res.getInt("artCantidad"));
+                art.setArtEstado(res.getString("artEstado"));
+                art.setArtComentario(res.getString("artComentario"));
+                art.setId_usuario(res.getInt("id_usuario"));
+                art.setId_categoria(res.getInt("id_categoria"));
+                datos.add(art);
+            }
+            con.close();
+            res.close();
+        }catch (SQLException e){
+            System.out.println("Excepciones controladas: "+e.getMessage());
+        }
+        return datos;
     }
     
     public boolean ingresarArticulos(articulo art) {
-        this.sql = "INSERT INTO articulo (codigo, nombreArt, cantidad, estado, id_usuario, id_categoria) VALUES(?, ?, ?, ?, ?, ?)";
+        Connection con = conexion();
+        PreparedStatement ps;
+        
+        String sql = "INSERT INTO articulo (artCodigo, artNombre, artCantidad, artEstado, artComentario, id_usuario, id_categoria) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
-            this.ps = this.con.prepareStatement(sql);
-            this.ps.setString(1,art.getCodigo());
-            this.ps.setString(2,art.getNombreArt());
-            this.ps.setInt(3,art.getCantidad());
-            this.ps.setString(4,art.getEstado());
-            this.ps.setInt(5,art.getId_usuario());
-            this.ps.setInt(6,art.getId_categoria());
-            this.ps.executeUpdate();
-            //this.con.close();
+            ps = con.prepareStatement(sql);
+            ps.setString(1,art.getArtCodigo());
+            ps.setString(2,art.getArtNombre());
+            ps.setInt(3,art.getArtCantidad());
+            ps.setString(4,art.getArtEstado());
+            ps.setString(5,art.getArtComentario());
+            ps.setInt(6,art.getId_usuario());
+            ps.setInt(7,art.getId_categoria());
+            ps.execute();
+            con.close();
             return true;     
         } catch (SQLException e) {
             //Logger.getLogger(controlCategoria.class.getName()).log(Level.SEVERE,null,e);
@@ -69,36 +110,74 @@ public class controlArticulo extends cConexion {
         }
     }
     
-   public boolean editarArticulo(articulo art){
-       this.sql = "UPDATE articulo SET codigo=?, nombreArt=?, cantidad=?, estado=?, id_usuario=?, id_categoria=? WHERE id_articulo=?";
+    public int existeArticulo(String artCodigo) {
+        Connection con = conexion();
+        PreparedStatement ps;
+        ResultSet rs;
+        
+        String sql = "SELECT count(id_articulo) FROM articulo WHERE artCodigo=?";
         try {
-            this.ps=this.con.prepareStatement(sql);
-            this.ps.setString(1,art.getCodigo());
-            this.ps.setString(2,art.getNombreArt());
-            this.ps.setInt(3, art.getCantidad());
-            this.ps.setString(4,art.getEstado());
-            this.ps.setInt(5,art.getId_usuario());
-            this.ps.setInt(6, art.getId_categoria());
-            this.ps.setInt(7, art.getId_articulo());
-            this.ps.executeUpdate();
-            //this.con.close();
-            return true;
-        } catch (SQLException e) {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, artCodigo);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            con.close();
+            rs.close();
+            return 1;
+        }catch (SQLException e){
+            Logger.getLogger(ControlUsuario.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("Excepciones controladas: "+e.getMessage());
-            return false;
+            return 1;
         }
-        //return false;
     }
+    
+   public boolean editarArticulo(articulo art){
+       Connection con = conexion();
+       PreparedStatement ps;
+       
+       String sql = "UPDATE articulo SET artCodigo=?, artNombre=?, artCantidad=?, artEstado=?, artComentario, id_usuario=?, id_categoria=? WHERE id_articulo=?";
+       try {
+           ps = con.prepareStatement(sql);
+           ps.setString(1,art.getArtCodigo());
+           ps.setString(2,art.getArtNombre());
+           ps.setInt(3, art.getArtCantidad());
+           ps.setString(4,art.getArtEstado());
+           ps.setString(4,art.getArtComentario());
+           ps.setInt(5,art.getId_usuario());
+           ps.setInt(6, art.getId_categoria());
+           ps.setInt(7, art.getId_articulo());
+           int filas = ps.executeUpdate();
+           con.close();
+           if (filas > 0){
+               return true;
+           }else{
+               return false;
+           }
+       }catch (SQLException e){
+           System.out.println("Excepciones controladas: "+e.getMessage());
+           return false;
+       }
+       //return false;
+   }
  
    public boolean EliminarArticulo(articulo art){
-        this.sql = "DELETE FROM articulo WHERE id_articulo=?";
+       Connection con = conexion();
+       PreparedStatement ps;
+       
+        String sql = "DELETE FROM articulo WHERE id_articulo=?";
         try {
-            this.ps=this.con.prepareStatement(sql);
-            this.ps.setInt(1,art.getId_articulo());
-            this.ps.executeUpdate();
-            //this.con.close();
-            return true; 
-        } catch (SQLException e) {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1,art.getId_articulo());
+            int filas = ps.executeUpdate();
+            con.close(); 
+            if (filas > 0){
+               return true;
+            }else{
+               return false;
+            }
+        }catch (SQLException e){
             //JOptionPane.showMessageDialog(null,"" );
             System.out.println("Excepciones controladas: "+e.getMessage());
             return false;

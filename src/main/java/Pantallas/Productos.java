@@ -7,9 +7,10 @@ package Pantallas;
 import com.dao.controlArticulo;
 import com.modelo.articulo;
 import db_conexion.cConexion;
-import java.sql.Connection;
+//import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
@@ -25,9 +26,9 @@ import javax.swing.table.DefaultTableModel;
 public class Productos extends javax.swing.JFrame {
     
     cConexion con = new cConexion();
-    int id_categoria;
+    int id_categoria, usId;
     String categoria;
-    String[] columnas = {"ID", "CODIGO", "NOMBRE", "CANTIDAD", "ESTADO", "USUARIO", "CATEGORIA"};
+    String[] columnas = {"ID", "CODIGO", "NOMBRE", "CANTIDAD", "ESTADO", "COMENTARIO", "USUARIO", "CATEGORIA"};
     DefaultTableModel model = new DefaultTableModel(columnas,0){
         @Override 
         public boolean isCellEditable(int row, int column) {
@@ -38,33 +39,76 @@ public class Productos extends javax.swing.JFrame {
     List<articulo> datos = new ArrayList<>();
     articulo art = new articulo();
     
-    private void listarTbArt() {
+    /*private void listarTbArt() {
         tbListarArt.getTableHeader().setReorderingAllowed(false);
         this.model.setRowCount(0);
         datos.clear();
         datos = (List<articulo>) controlArt.mostrarArticulos();
-        Object[] obj = new Object[7];
+        Object[] obj = new Object[8];
         for (articulo fila : datos) {
             obj[0] = fila.getId_articulo();
-            obj[1] = fila.getCodigo();
-            obj[2] = fila.getNombreArt();
-            obj[3] = fila.getCantidad();
-            obj[4] = fila.getEstado();
-            obj[5] = fila.getId_usuario();
-            obj[6] = fila.getId_categoria();
+            obj[1] = fila.getArtCodigo();
+            obj[2] = fila.getArtNombre();
+            obj[3] = fila.getArtCantidad();
+            obj[4] = fila.getArtEstado();
+            obj[5] = fila.getArtComentario();
+            obj[6] = fila.getId_usuario();
+            obj[7] = fila.getId_categoria();
             this.model.addRow(obj);
         }
         this.tbListarArt.setModel(model);
+    }*/
+    
+    private void BuscarDatos(){
+        tbListarArt.getTableHeader().setReorderingAllowed(false);
+        model.setRowCount(0);
+        datos.clear();
+        String frase = txtBuscar.getText();
+        datos = (List<articulo>) controlArt.buscarArticulo(frase);
+        Object[] obj = new Object[8];
+        for (articulo fila : datos) {
+            obj[0] = fila.getId_articulo();
+            obj[1] = fila.getArtCodigo();
+            obj[2] = fila.getArtNombre();
+            obj[3] = fila.getArtCantidad();
+            obj[4] = fila.getArtEstado();
+            obj[5] = fila.getArtComentario();
+            obj[6] = fila.getId_usuario();
+            obj[7] = fila.getId_categoria();
+            model.addRow(obj);
+        }
+        tbListarArt.setModel(model);
     }
     
-    /*public void limpiarCat(){
-        this.txtNombreCat.setText("");
-        this.txtDescripcionCat.setText("");          
-    }*/
+    private void limpiarArt(){
+        txtCodigo.setText("");
+        txtNombre.setText("");
+        txtComentario.setText("");
+    }
+    
+    private void bloquearArt(){
+        txtCodigo.setEnabled(false);
+        txtNombre.setEnabled(false);
+        txtCantidad.setEnabled(false);
+        cbxEstado.setEnabled(false);
+        txtComentario.setEnabled(false);
+        cbxCategoria.setEnabled(false);
+        btnGuardar.setEnabled(false);
+        btnActualizar.setEnabled(false);
+    }
+    
+    private void editablesArt(){
+        txtCodigo.setEnabled(true);
+        txtNombre.setEnabled(true);
+        txtCantidad.setEnabled(true);
+        cbxEstado.setEnabled(true);
+        txtComentario.setEnabled(true);
+        cbxCategoria.setEnabled(true); 
+    }
     
     private void cargarCbxCat(){
        //cConexion con = new cConexion();
-       String sql = "SELECT categoria FROM categoria";
+       String sql = "SELECT catNombre FROM categoria";
        PreparedStatement ps;
        ResultSet res;
         try {
@@ -79,7 +123,7 @@ public class Productos extends javax.swing.JFrame {
            //while (res.next()) {
                ///cbxCategoria.addItem(res.getString("categoria"));
            }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un error: "+e.toString(), " ¡¡ ERROR !!", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -87,7 +131,7 @@ public class Productos extends javax.swing.JFrame {
      public void idCategoria(){
        //cConexion con = new cConexion();
        //String cat = cbxCategoria.getSelectedItem().toString();
-       String sql = "SELECT id_categoria FROM categoria WHERE categoria = '"+cbxCategoria.getSelectedItem()+"'";
+       String sql = "SELECT id_categoria FROM categoria WHERE catNombre = '"+cbxCategoria.getSelectedItem()+"'";
        PreparedStatement ps;
        ResultSet res;
        try {
@@ -98,7 +142,7 @@ public class Productos extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Ha ocurrido un error", "¡¡ ERROR !!", JOptionPane.ERROR_MESSAGE);
             }
-        } catch(Exception e) {
+        } catch(SQLException e) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un error: "+e.toString(), " ¡¡ ERROR !!", JOptionPane.ERROR_MESSAGE);
         }  
     }
@@ -106,18 +150,18 @@ public class Productos extends javax.swing.JFrame {
      public void nombreCat(){
        //cConexion con = new cConexion();
        //String cat = cbxCategoria.getSelectedItem().toString();
-       String sql = "SELECT categoria FROM categoria WHERE id_categoria = '"+id_categoria+"'";
+       String sql = "SELECT catNombre FROM categoria WHERE id_categoria = '"+id_categoria+"'";
        PreparedStatement ps;
        ResultSet res;
        try {
            ps = con.conexion().prepareStatement(sql);
            res = ps.executeQuery();
             if(res.next()) {
-                categoria = res.getString("categoria");
+                categoria = res.getString("catNombre");
             } else {
                 JOptionPane.showMessageDialog(null, "Ha ocurrido un error", "¡¡ ERROR !!", JOptionPane.ERROR_MESSAGE);
             }
-        } catch(Exception e) {
+        } catch(SQLException e) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un error: "+e.toString(), " ¡¡ ERROR !!", JOptionPane.ERROR_MESSAGE);
         }  
     }
@@ -127,9 +171,16 @@ public class Productos extends javax.swing.JFrame {
      */
     public Productos() {
         initComponents();
-        listarTbArt();
+        //listarTbArt();
         cargarCbxCat();
         //idCategoria();
+        BuscarDatos();
+        bloquearArt();
+    }
+    
+    public void obtenerDato(int usId){
+        this.usId = usId;
+        lblUserLogin.setText(String.valueOf(usId));
     }
 
     /**
@@ -141,51 +192,42 @@ public class Productos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jSeparator1 = new javax.swing.JSeparator();
-        lblDetalleArt = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JSeparator();
-        jSeparator3 = new javax.swing.JSeparator();
-        jSeparator4 = new javax.swing.JSeparator();
-        lblListArt = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         lblCodigo = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
-        lblCantidad = new javax.swing.JLabel();
-        lblEstado = new javax.swing.JLabel();
-        btnGuardar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
-        btnLimpiar = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tbListarArt = new javax.swing.JTable();
-        jLabel6 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
         lblNombreArt = new javax.swing.JLabel();
-        txtNombreArt = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        lblUsuario = new javax.swing.JLabel();
-        txtUsuario = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
+        lblCantidad = new javax.swing.JLabel();
+        txtCantidad = new javax.swing.JSpinner();
+        lblEstado = new javax.swing.JLabel();
+        cbxEstado = new javax.swing.JComboBox<>();
         lblCategoria = new javax.swing.JLabel();
         cbxCategoria = new javax.swing.JComboBox<>();
-        txtCantidad = new javax.swing.JSpinner();
-        cbxEstado = new javax.swing.JComboBox<>();
+        lblComentario = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtComentario = new javax.swing.JTextArea();
+        btnGuardar = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnNuevo = new javax.swing.JButton();
+        lblDetalleArt = new javax.swing.JLabel();
         lblIdArticulo = new javax.swing.JLabel();
-        lblArticulo = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        chxDetalleArticulo = new javax.swing.JCheckBox();
-        txtDetalleArticulo = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        chxDDetallesArticulo = new javax.swing.JCheckBox();
-        btnInfoArticulo = new javax.swing.JButton();
+        lblIdUser = new javax.swing.JLabel();
+        lblUserLogin = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbListarArt = new javax.swing.JTable();
+        lblBuscar = new javax.swing.JLabel();
+        txtBuscar = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnPerfil = new javax.swing.JButton();
+        btnCat = new javax.swing.JButton();
+        btnMenu = new javax.swing.JButton();
+        lblInfo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        lblDetalleArt.setText("Detalle del articulo");
-
-        jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
-
-        lblListArt.setText("Lista de articulos");
 
         lblCodigo.setText("Código");
 
@@ -195,9 +237,23 @@ public class Productos extends javax.swing.JFrame {
             }
         });
 
+        lblNombreArt.setText("Nombre");
+
         lblCantidad.setText("Cantidad");
 
+        txtCantidad.setModel(new javax.swing.SpinnerNumberModel(1, 1, 9999, 1));
+
         lblEstado.setText("Estado");
+
+        cbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Dañado", "En reparación", "Inactivo" }));
+
+        lblCategoria.setText("Categoria");
+
+        lblComentario.setText("Comentario");
+
+        txtComentario.setColumns(20);
+        txtComentario.setRows(5);
+        jScrollPane2.setViewportView(txtComentario);
 
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -206,14 +262,120 @@ public class Productos extends javax.swing.JFrame {
             }
         });
 
-        btnEliminar.setText("Eliminar");
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+        btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
+                btnActualizarActionPerformed(evt);
             }
         });
 
-        btnLimpiar.setText("Limpiar");
+        btnCancelar.setText("x");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        btnNuevo.setText("+");
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
+
+        lblDetalleArt.setText("ARTICULO");
+
+        lblIdArticulo.setText("ID");
+
+        lblIdUser.setText("ID");
+
+        lblUserLogin.setText("ID");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblComentario)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblNombreArt)
+                            .addComponent(lblCodigo)
+                            .addComponent(lblCantidad)
+                            .addComponent(lblEstado)
+                            .addComponent(lblCategoria)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnNuevo)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnCancelar)))
+                        .addGap(30, 30, 30)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(lblDetalleArt)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblIdArticulo)
+                                .addGap(26, 26, 26)
+                                .addComponent(lblIdUser)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblUserLogin)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(cbxCategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cbxEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtCantidad)
+                            .addComponent(txtNombre)
+                            .addComponent(txtCodigo)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(24, 24, 24))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(22, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblDetalleArt)
+                    .addComponent(lblIdArticulo)
+                    .addComponent(lblIdUser)
+                    .addComponent(lblUserLogin))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCodigo)
+                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNombreArt)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCantidad)
+                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblEstado)
+                    .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblComentario)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCategoria)
+                    .addComponent(cbxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGuardar)
+                    .addComponent(btnNuevo)
+                    .addComponent(btnCancelar)
+                    .addComponent(btnActualizar))
+                .addGap(36, 36, 36))
+        );
 
         tbListarArt.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -233,11 +395,14 @@ public class Productos extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tbListarArt);
 
-        jLabel6.setText("Buscar por:");
+        lblBuscar.setText("Buscar");
 
-        jButton4.setText("Buscar");
-
-        jButton5.setText("Limpiar");
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         btnEditar.setText("Editar");
         btnEditar.setToolTipText("");
@@ -247,197 +412,91 @@ public class Productos extends javax.swing.JFrame {
             }
         });
 
-        jButton7.setText("Regresar");
-
-        lblNombreArt.setText("Nombre");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Código", "Item 2", "Item 3", "Item 4" }));
-
-        lblUsuario.setText("Usuario");
-
-        lblCategoria.setText("Categoria");
-
-        txtCantidad.setModel(new javax.swing.SpinnerNumberModel(1, 1, 9999, 1));
-
-        cbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Dañado", "En reparación", "Inactivo" }));
-
-        lblIdArticulo.setText("ID");
-
-        lblArticulo.setText("Detalle de articulo");
-
-        jButton1.setText("Agregar");
-
-        chxDetalleArticulo.setText("Agregar detalles de articulo");
-        chxDetalleArticulo.addActionListener(new java.awt.event.ActionListener() {
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chxDetalleArticuloActionPerformed(evt);
+                btnEliminarActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Limpiar");
+        btnPerfil.setText("Perfil");
 
-        chxDDetallesArticulo.setText("Agregar sin detalles");
+        btnCat.setText("Categoria");
 
-        btnInfoArticulo.setText("Articulo mas detallado");
-        btnInfoArticulo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnInfoArticuloActionPerformed(evt);
-            }
-        });
+        btnMenu.setText("Menu Principal");
+
+        lblInfo.setText("INFORMACION");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(btnPerfil)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnMenu)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCat))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblInfo)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(lblBuscar)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnBuscar)))
+                        .addGap(53, 53, 53)
+                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 573, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(15, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(7, Short.MAX_VALUE)
+                .addComponent(lblInfo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblBuscar)
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar)
+                    .addComponent(btnEditar)
+                    .addComponent(btnEliminar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPerfil)
+                    .addComponent(btnCat)
+                    .addComponent(btnMenu))
+                .addGap(15, 15, 15))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(chxDDetallesArticulo, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
-                            .addComponent(jSeparator1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(lblCodigo)
-                                .addComponent(lblCantidad)
-                                .addComponent(lblEstado)
-                                .addComponent(txtCodigo)
-                                .addComponent(lblNombreArt)
-                                .addComponent(txtNombreArt)
-                                .addComponent(lblUsuario)
-                                .addComponent(lblCategoria)
-                                .addComponent(cbxCategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtUsuario)
-                                .addComponent(txtCantidad)
-                                .addComponent(cbxEstado, 0, 137, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblDetalleArt)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblIdArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(8, 8, 8)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnInfoArticulo)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(19, 19, 19)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton7)
-                        .addGap(43, 43, 43))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(chxDetalleArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblListArt)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(137, 137, 137)
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(21, 21, 21)
-                                .addComponent(jButton4)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton5))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 528, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 543, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(99, 99, 99)
-                                .addComponent(jButton1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton2))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(txtDetalleArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap())))
+                .addGap(43, 43, 43)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator3)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblListArt)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(chxDetalleArticulo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblArticulo)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDetalleArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(9, 9, 9)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton4)
-                            .addComponent(jButton5)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6))
-                        .addGap(43, 43, 43)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
-                        .addComponent(jButton7)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblDetalleArt)
-                            .addComponent(lblIdArticulo))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(lblCodigo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(14, 14, 14)
-                        .addComponent(lblNombreArt)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNombreArt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(lblCantidad)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblEstado)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblUsuario)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblCategoria)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(chxDDetallesArticulo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                        .addComponent(btnGuardar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEditar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEliminar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnLimpiar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnInfoArticulo)
-                        .addGap(25, 25, 25))))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 17, Short.MAX_VALUE))
         );
 
         pack();
@@ -450,19 +509,24 @@ public class Productos extends javax.swing.JFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
         idCategoria();
-        if(txtCodigo.getText().equals("")||txtNombreArt.getText().equals("")){
+        if(txtCodigo.getText().equals("")||txtNombre.getText().equals("") || txtComentario.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Ingrese todos los datos solicitados !!");
         }else{
-            this.art.setCodigo(this.txtCodigo.getText());
-            this.art.setNombreArt(this.txtNombreArt.getText());
-            this.art.setCantidad(Integer.parseInt(this.txtCantidad.getValue().toString()));
-            this.art.setEstado(this.cbxEstado.getSelectedItem().toString());
-            this.art.setId_usuario(Integer.parseInt(this.txtUsuario.getText()));
-            this.art.setId_categoria(id_categoria);
-            if (this.controlArt.ingresarArticulos(this.art)){
+            art.setArtCodigo(txtCodigo.getText());
+            art.setArtNombre(txtNombre.getText());
+            art.setArtCantidad(Integer.parseInt(txtCantidad.getValue().toString()));
+            art.setArtEstado(cbxEstado.getSelectedItem().toString());
+            art.setArtComentario(txtComentario.getText());
+            art.setId_usuario(Integer.valueOf(lblUserLogin.getText()));
+            art.setId_categoria(id_categoria);
+            if (controlArt.ingresarArticulos(art)){
                 JOptionPane.showMessageDialog(this,"Categoria guardada con exito !!");
-                listarTbArt();
+                //listarTbArt();
                 //limpiarArt();
+                BuscarDatos();
+                bloquearArt();
+                limpiarArt();
+                btnNuevo.setEnabled(true);
             }else{
                 JOptionPane.showMessageDialog(this,"Error al insertar");
             }
@@ -471,76 +535,128 @@ public class Productos extends javax.swing.JFrame {
 
     private void tbListarArtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbListarArtMouseClicked
         // TODO add your handling code here:
-        this.txtCodigo.setText(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),1).toString());
-        this.txtNombreArt.setText(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),2).toString());
+        /*this.txtCodigo.setText(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),1).toString());
+        this.txtNombre.setText(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),2).toString());
         this.txtCantidad.setValue(Integer.parseInt(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),3).toString()));
         this.cbxEstado.setSelectedItem(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),4).toString());
         this.txtUsuario.setText(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),5).toString());
         id_categoria = Integer.parseInt(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),6).toString());
         nombreCat();
         this.cbxCategoria.setSelectedItem(categoria);
-        this.lblIdArticulo.setText(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),0).toString());
+        this.lblIdArticulo.setText(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),0).toString());*/
     }//GEN-LAST:event_tbListarArtMouseClicked
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
-        idCategoria();
-        if(txtCodigo.getText().equals("")||txtNombreArt.getText().equals("")){
-            JOptionPane.showMessageDialog(null, "Ingrese todos los datos solicitados !!");
+        int fila = this.tbListarArt.getSelectedRow();
+        if (fila >= 0) {
+            editablesArt();
+            btnGuardar.setEnabled(false);
+            btnActualizar.setEnabled(true);
+            txtCodigo.setText(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),1).toString());
+            txtNombre.setText(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),2).toString());
+            txtCantidad.setValue(Integer.parseInt(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),3).toString()));
+            cbxEstado.setSelectedItem(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),4).toString());
+            txtComentario.setText(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),5).toString());
+            lblIdUser.setText(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),6).toString());
+            id_categoria = Integer.parseInt(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),7).toString());
+            nombreCat();
+            cbxCategoria.setSelectedItem(categoria);
+            lblIdArticulo.setText(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),0).toString());
         }else{
-            this.art.setId_articulo(Integer.parseInt(this.lblIdArticulo.getText()));
-            this.art.setCodigo(this.txtCodigo.getText());
-            this.art.setNombreArt(this.txtNombreArt.getText());
-            this.art.setCantidad(Integer.parseInt(this.txtCantidad.getValue().toString()));
-            this.art.setEstado(this.cbxEstado.getSelectedItem().toString());
-            this.art.setId_usuario(Integer.parseInt(this.txtUsuario.getText()));
-            this.art.setId_categoria(id_categoria);
-            if (this.controlArt.editarArticulo(this.art)){
-                JOptionPane.showMessageDialog(this,"Se ha modificado con exito!!");
-                listarTbArt();
-                //limpiarCat();
-            }else{
-                JOptionPane.showMessageDialog(this,"Ha ocurrido un error al modificar");
-            }
+            JOptionPane.showMessageDialog(null, "Seleccione un articulo de la tabla para poder editar su información");
         }
+        
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        if(txtCodigo.getText().equals("")||txtNombreArt.getText().equals("")){
-            JOptionPane.showMessageDialog(null, "Ingrese todos los datos solicitados !!");
-        }else{ 
-            this.art.setId_articulo(Integer.parseInt(this.lblIdArticulo.getText()));
-            this.art.setCodigo(this.txtCodigo.getText());
-            this.art.setNombreArt(this.txtNombreArt.getText());
-            this.art.setCantidad(Integer.parseInt(this.txtCantidad.getValue().toString()));
-            this.art.setEstado(this.cbxEstado.getSelectedItem().toString());
-            this.art.setId_usuario(Integer.parseInt(this.txtUsuario.getText()));
-            this.art.setId_categoria(id_categoria);
-            
-            int resp = JOptionPane.showConfirmDialog(null, "¿Desea eliminar el articulo selecionado ??", "Advertencia !!", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
-            if (resp==JOptionPane.YES_OPTION)
-            {
-                if (this.controlArt.EliminarArticulo(this.art)){
-                    JOptionPane.showMessageDialog(this,"Articulo eliminado !!");
-                    listarTbArt();
-                    //limpiarCat();
-                }else{
-                    JOptionPane.showMessageDialog(this,"El articulo no se ha eliminado !!");
-                }
+        /*int resp = JOptionPane.showConfirmDialog(null, "¿Desea eliminar el articulo selecionado ??", "Advertencia !!", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+        if (resp == JOptionPane.YES_OPTION)
+        {
+            if (this.controlArt.EliminarArticulo(this.art)){
+                JOptionPane.showMessageDialog(this,"Articulo eliminado !!");
+                listarTbArt();
+                //limpiarCat();
+            }else{
+                JOptionPane.showMessageDialog(this,"El articulo no se ha eliminado !!");
             }
+        }*/
+        
+        int fila = tbListarArt.getSelectedRow();
+        if (fila >= 0){
+            String id = tbListarArt.getValueAt(fila, 0).toString();
+            String artCodigo = tbListarArt.getValueAt(fila, 1).toString();
+            String artNombre = tbListarArt.getValueAt(fila, 2).toString();
+            art.setId_articulo(Integer.parseInt(id));
+            int resp = JOptionPane.showConfirmDialog(null, "¿Desea eliminar el articulo "+artNombre+" con el codigo: "+artCodigo+"?", "Advertencia", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+            if (resp==JOptionPane.YES_OPTION){
+                if (controlArt.EliminarArticulo(art)){
+                    JOptionPane.showMessageDialog(this,"Articulo eliminade");
+                    BuscarDatos();
+                    //listarTbCat();
+                }
+            }else{
+                JOptionPane.showMessageDialog(this,"el articulo no se ha eliminado");
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione un articulo de la tabla para poder Eliminarlp");
         }
+        
     }//GEN-LAST:event_btnEliminarActionPerformed
 
-    private void chxDetalleArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chxDetalleArticuloActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_chxDetalleArticuloActionPerformed
+        bloquearArt();
+        limpiarArt();
+        btnNuevo.setEnabled(true);
+        btnGuardar.setEnabled(false);
+        btnActualizar.setEnabled(false);
 
-    private void btnInfoArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInfoArticuloActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
-         JFrame detalladoArt = new JFrame ("DetalleArticulo");
-         detalladoArt.setVisible (true);
-    }//GEN-LAST:event_btnInfoArticuloActionPerformed
+        idCategoria();
+        if(txtCodigo.getText().equals("") || txtNombre.getText().equals("") || txtComentario.getText().equals("") ){
+            JOptionPane.showMessageDialog(null, "Ingrese todos los datos solicitados");
+        }else{
+            //art.setId_articulo(Integer.parseInt(this.lblIdArticulo.getText()));
+            art.setArtCodigo(txtCodigo.getText());
+            art.setArtNombre(txtNombre.getText());
+            art.setArtCantidad(Integer.parseInt(txtCantidad.getValue().toString()));
+            art.setArtEstado(cbxEstado.getSelectedItem().toString());
+            art.setArtComentario(txtComentario.getText());
+            art.setId_usuario(Integer.parseInt(lblIdUser.getText()));
+            art.setId_categoria(id_categoria);
+            if (this.controlArt.editarArticulo(art)){
+                JOptionPane.showMessageDialog(this,"Se ha modificado con exito!!");
+                //listarTbArt();
+                //limpiarCat();
+                BuscarDatos();
+                bloquearArt();
+                limpiarArt();
+                btnActualizar.setEnabled(false);
+            }else{
+                JOptionPane.showMessageDialog(this,"Ha ocurrido un error al modificar");
+            }
+        }
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        // TODO add your handling code here:
+        btnGuardar.setEnabled(true);
+        btnNuevo.setEnabled(false);
+        editablesArt();
+    }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        // TODO add your handling code here:
+        BuscarDatos();
+        //listarTbCat();
+        bloquearArt();
+        limpiarArt();
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -578,42 +694,39 @@ public class Productos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnCat;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton btnInfoArticulo;
-    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnMenu;
+    private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnPerfil;
     private javax.swing.JComboBox<String> cbxCategoria;
     private javax.swing.JComboBox<String> cbxEstado;
-    private javax.swing.JCheckBox chxDDetallesArticulo;
-    private javax.swing.JCheckBox chxDetalleArticulo;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JSeparator jSeparator4;
-    private javax.swing.JLabel lblArticulo;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblBuscar;
     private javax.swing.JLabel lblCantidad;
     private javax.swing.JLabel lblCategoria;
     private javax.swing.JLabel lblCodigo;
+    private javax.swing.JLabel lblComentario;
     private javax.swing.JLabel lblDetalleArt;
     private javax.swing.JLabel lblEstado;
     private javax.swing.JLabel lblIdArticulo;
-    private javax.swing.JLabel lblListArt;
+    private javax.swing.JLabel lblIdUser;
+    private javax.swing.JLabel lblInfo;
     private javax.swing.JLabel lblNombreArt;
-    private javax.swing.JLabel lblUsuario;
+    private javax.swing.JLabel lblUserLogin;
     private javax.swing.JTable tbListarArt;
+    private javax.swing.JTextField txtBuscar;
     private javax.swing.JSpinner txtCantidad;
     private javax.swing.JTextField txtCodigo;
-    private javax.swing.JTextField txtDetalleArticulo;
-    private javax.swing.JTextField txtNombreArt;
-    private javax.swing.JTextField txtUsuario;
+    private javax.swing.JTextArea txtComentario;
+    private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

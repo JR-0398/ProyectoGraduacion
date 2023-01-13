@@ -21,7 +21,7 @@ public final class UsuariosLista extends javax.swing.JFrame {
     /**
      * Creates new form UsuariosLista
      */
-    String[] columnas = {"NOMBRE", "APELLIDO","DUI", "USUARIO", "TELEFONO", "DIRECCIÓN", "CARGO"};
+    String[] columnas = {"NOMBRE", "APELLIDO", "DUI", "CARGO", "TELEFONO", "PREGUNTA", "RESPUESTA"};
     DefaultTableModel model = new DefaultTableModel(columnas,0);
     ControlUsuario controlUsu = new ControlUsuario();
     List<usuario> datos = new ArrayList<>();
@@ -36,13 +36,13 @@ public final class UsuariosLista extends javax.swing.JFrame {
         datos = (List<usuario> )controlUsu.MostrarUsuarios();
         Object [] obj = new Object[7];
         for (usuario fila : datos) {
-            obj[0]=fila.getNombre();
-            obj[1]=fila.getApellido();
-            obj[2]=fila.getDui();
-            obj[3]=fila.getuLogin();
-            obj[4]=fila.getTelefono();
-            obj[5]=fila.getDireccion();
-            obj[6]=fila.getCargo();
+            obj[0]=fila.getUsNombre();
+            obj[1]=fila.getUsApellido();
+            obj[2]=fila.getUsDui();
+            obj[3]=fila.getUsCargo();
+            obj[4]=fila.getUsTelefono();
+            obj[5]=fila.getUsPregunta();
+            obj[6]=fila.getUsRespuesta();
             this.model.addRow(obj);
         }
        this.tablaUsuarios.setModel(model);
