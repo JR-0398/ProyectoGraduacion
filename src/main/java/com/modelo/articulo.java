@@ -10,10 +10,11 @@ package com.modelo;
  */
 public class articulo {
     private int id_articulo;
-    private String codigo;
-    private String nombreArt;
-    private int cantidad ;
-    private String estado;
+    private String artCodigo;
+    private String artNombre;
+    private int artCantidad ;
+    private String artEstado;
+    private String artComentario;
     private int id_usuario;
     private int id_categoria;
 
@@ -24,16 +25,17 @@ public class articulo {
         this.id_articulo = id_articulo;
     }
 
-    public articulo(int id_articulo, String codigo, String nombreArt, int cantidad, String estado, int id_usuario, int id_categoria) {
+    public articulo(int id_articulo, String artCodigo, String artNombre, int artCantidad, String artEstado, String artComentario, int id_usuario, int id_categoria) {
         this.id_articulo = id_articulo;
-        this.codigo = codigo;
-        this.nombreArt = nombreArt;
-        this.cantidad = cantidad;
-        this.estado = estado;
+        this.artCodigo = artCodigo;
+        this.artNombre = artNombre;
+        this.artCantidad = artCantidad;
+        this.artEstado = artEstado;
+        this.artComentario = artComentario;
         this.id_usuario = id_usuario;
         this.id_categoria = id_categoria;
     }
-    
+
     public int getId_articulo() {
         return id_articulo;
     }
@@ -42,36 +44,44 @@ public class articulo {
         this.id_articulo = id_articulo;
     }
 
-    public String getCodigo() {
-        return codigo;
+    public String getArtCodigo() {
+        return artCodigo;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
+    public void setArtCodigo(String artCodigo) {
+        this.artCodigo = artCodigo;
     }
 
-    public String getNombreArt() {
-        return nombreArt;
+    public String getArtNombre() {
+        return artNombre;
     }
 
-    public void setNombreArt(String nombreArt) {
-        this.nombreArt = nombreArt;
+    public void setArtNombre(String artNombre) {
+        this.artNombre = artNombre;
     }
 
-    public int getCantidad() {
-        return cantidad;
+    public int getArtCantidad() {
+        return artCantidad;
     }
 
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
+    public void setArtCantidad(int artCantidad) {
+        this.artCantidad = artCantidad;
     }
 
-    public String getEstado() {
-        return estado;
+    public String getArtEstado() {
+        return artEstado;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setArtEstado(String artEstado) {
+        this.artEstado = artEstado;
+    }
+
+    public String getArtComentario() {
+        return artComentario;
+    }
+
+    public void setArtComentario(String artComentario) {
+        this.artComentario = artComentario;
     }
 
     public int getId_usuario() {
@@ -89,4 +99,5 @@ public class articulo {
     public void setId_categoria(int id_categoria) {
         this.id_categoria = id_categoria;
     }
+    
 }

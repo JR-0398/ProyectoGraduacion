@@ -5,7 +5,12 @@
 package Pantallas;
 
 import com.dao.ControlUsuario;
+import com.modelo.tipoUsuario;
 import com.modelo.usuario;
+import db_conexion.cConexion;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,7 +29,7 @@ public class ListarUsuarios extends javax.swing.JFrame {
     private JButton btnEditarInfoUsu;
    
 
-    String[] columnas = {"ID", "NOMBRE", "APELLIDO", "DUI", "USUARIO", "CONTRASEÑA", "TELEFONO", "DIRECCIÓN", "CARGO"};
+    String[] columnas = {"ID", "NOMBRE", "APELLIDO", "DUI", "CARGO", "TELEFONO", "PREGUNTA", "RESPUESTA"};
 
     ControlUsuario controlUsu = new ControlUsuario();
     List<usuario> datos = new ArrayList<>();
@@ -46,17 +51,16 @@ public class ListarUsuarios extends javax.swing.JFrame {
     datos.clear();
     String frase = this.txtBuscar.getText();
     datos = (List<usuario>) controlUsu.CargarFiltrar(frase);
-        Object[] obj = new Object[9];
+        Object[] obj = new Object[8];
         for (usuario fila : datos) {
             obj[0] = fila.getId_usuario();
-            obj[1] = fila.getNombre();
-            obj[2] = fila.getApellido();
-            obj[3] = fila.getDui();
-            obj[4] = fila.getuLogin();
-            obj[5] = fila.getPasswd();
-            obj[6] = fila.getTelefono();
-            obj[7] = fila.getDireccion();
-            obj[8] = fila.getCargo();
+            obj[1] = fila.getUsNombre();
+            obj[2] = fila.getUsApellido();
+            obj[3] = fila.getUsDui();
+            obj[4] = fila.getUsCargo();
+            obj[5] = fila.getUsTelefono();
+            obj[6] = fila.getUsPregunta();
+            obj[7] = fila.getUsRespuesta();
             model.addRow(obj);
         }
         tableListUsuarios.setModel(model);
@@ -89,11 +93,11 @@ public class ListarUsuarios extends javax.swing.JFrame {
         this.txtApellido.setText("");
         this.txtCargo.setText("");
         this.txtContra.setText("");
-        this.txtDireccion.setText("");
+        this.txtRespuesta.setText("");
         this.txtDui.setText("");
         this.txtNombre.setText("");
         this.txtTelefono.setText("");
-        this.txtUsuario.setText("");
+        this.txtPregunta.setText("");
         this.txtID.setText("");
     }
 
@@ -102,10 +106,10 @@ public class ListarUsuarios extends javax.swing.JFrame {
         txtApellido.setEnabled(false);
         txtCargo.setEnabled(false);
         txtContra.setEnabled(false);
-        txtDireccion.setEnabled(false);
+        txtRespuesta.setEnabled(false);
         txtDui.setEnabled(false);
         txtTelefono.setEnabled(false);
-        txtUsuario.setEnabled(false);
+        txtPregunta.setEnabled(false);
         txtID.setEnabled(false);
     }
 
@@ -114,18 +118,85 @@ public class ListarUsuarios extends javax.swing.JFrame {
         txtApellido.setEnabled(true);
         txtCargo.setEnabled(true);
         txtContra.setEnabled(true);
-        txtDireccion.setEnabled(true);
+        txtPregunta.setEnabled(true);
+        txtRespuesta.setEnabled(true);
         txtDui.setEnabled(true);
         txtTelefono.setEnabled(true);
-        txtUsuario.setEnabled(true);
         txtID.setEnabled(true);
     }
     
     public void btnNoVisibles(){
+        btnCancelar.setVisible(false);
+        btnGuardar.setVisible(false);
+        btnCrearUsu.setVisible(false);
+        //lblTipo.setVisible(false);
+    }
     
-    btnCancelar.setVisible(false);
-    btnGuardar.setVisible(false);
-    btnCrearUsu.setVisible(false);
+    private void cbxTipoUs(){
+        cConexion con = new cConexion();
+        String sql = "SELECT id_tipoUsuario, tuNombre FROM tipo_usuario";
+        PreparedStatement ps;
+        ResultSet res;
+        try {
+            ps = con.conexion().prepareStatement(sql);
+            res = ps.executeQuery();
+            while (res.next()){
+                //System.out.println(res.getInt("id_tipoUsuario"));
+                //System.out.println(res.getString("tuNombre"));
+                cbxTipo.addItem(
+                        new tipoUsuario ((res.getInt("id_tipoUsuario")),
+                                res.getString("tuNombre")));
+            }
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error: "+e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+        }  
+    }
+    
+    private void cbxIDtipoUS(){
+        cConexion con = new cConexion();
+        String tipoUS, usID, usDui;
+        int idTipo;
+        usID = txtID.getText();
+        usDui = txtDui.getText();
+        String sql = "SELECT tipo_usuario.tuNombre, usuario.id_tipoUsuario FROM tipo_usuario LEFT JOIN usuario ON usuario.id_tipoUsuario = tipo_usuario.id_tipoUsuario WHERE usuario.id_usuario = '"+usID+"' AND usuario.usDui = '"+usDui+"'";
+        PreparedStatement ps;
+        ResultSet res;
+        try {
+            ps = con.conexion().prepareStatement(sql);
+            res = ps.executeQuery();
+            if(res.next()){
+                tipoUS = res.getString("tuNombre");
+                txtTipo.setText(tipoUS);
+                //txtTipo.setText(tipoUS);
+                //System.out.println(tipoUS);
+                idTipo = res.getInt("id_tipoUsuario");
+                lblTipo.setText(String.valueOf(idTipo));
+            }else{
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error: "+e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+        }  
+        /*cConexion con = new cConexion();
+        String usID, usDui;
+        int usTipo;
+        usID = txtID.getText();
+        usDui = txtDui.getText();
+        String sql = "SELECT id_tipoUsuario FROM usuario WHERE id_usuario = '"+usID+"' AND usDui = '"+usDui+"'";
+        PreparedStatement ps;
+        ResultSet res;
+        try {
+            ps = con.conexion().prepareStatement(sql);
+            res = ps.executeQuery();
+            if(res.next()){
+                usTipo = res.getInt("id_tipoUsuario");
+                lblTipo.setText(String.valueOf(usTipo));
+            }else{
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error: "+e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+        }*/  
     }
 
     /**
@@ -137,11 +208,10 @@ public class ListarUsuarios extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         jTextBloqueados();
         btnNoVisibles();
-//        String frase = this.txtBuscar.getText(); //Variable para capturar la palabra a usar en el filtro de busqueda del CargarBuscarDatos
-
+        //String frase = this.txtBuscar.getText(); //Variable para capturar la palabra a usar en el filtro de busqueda del CargarBuscarDatos
         CargarBuscarDatos();
-        
-
+        cbxTipoUs();
+        //cbxIDtipoUS();
     }
 
     /**
@@ -161,14 +231,12 @@ public class ListarUsuarios extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         txtApellido = new javax.swing.JTextField();
         txtDui = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
         txtContra = new javax.swing.JTextField();
-        txtDireccion = new javax.swing.JTextField();
-        txtUsuario = new javax.swing.JTextField();
+        txtPregunta = new javax.swing.JTextField();
         txtCargo = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
@@ -177,6 +245,12 @@ public class ListarUsuarios extends javax.swing.JFrame {
         btnCrearUsu = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         txtID = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        txtRespuesta = new javax.swing.JTextField();
+        lblTipo = new javax.swing.JLabel();
+        lblTipoUS = new javax.swing.JLabel();
+        cbxTipo = new javax.swing.JComboBox<>();
+        txtTipo = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableListUsuarios = new javax.swing.JTable();
@@ -211,13 +285,10 @@ public class ListarUsuarios extends javax.swing.JFrame {
         jLabel6.setText("Contraseña:");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel7.setText("Usuario:");
-
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel8.setText("Dirección:");
+        jLabel7.setText("Cargo:");
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel9.setText("Cargo:");
+        jLabel9.setText("Pregunta:");
 
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -239,97 +310,123 @@ public class ListarUsuarios extends javax.swing.JFrame {
         });
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel11.setText("ID");
+        jLabel11.setText("ID:");
 
         txtID.setEditable(false);
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel8.setText("Respuesta:");
+
+        lblTipo.setText("ID");
+
+        lblTipoUS.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        lblTipoUS.setText("Tipo de Usuario:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(175, 175, 175))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel11))
-                        .addGap(32, 32, 32)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCargo, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtDui, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtContra, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(44, 44, 44))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnCrearUsu)
-                        .addGap(41, 41, 41)
-                        .addComponent(btnGuardar)
-                        .addGap(38, 38, 38)
-                        .addComponent(btnCancelar)
-                        .addGap(9, 9, 9))))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(200, 200, 200)
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(66, 66, 66)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel11)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel10)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel8))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtDui, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtContra, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCargo, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtPregunta, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtRespuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnCrearUsu)
+                                .addGap(62, 62, 62)
+                                .addComponent(btnGuardar)
+                                .addGap(56, 56, 56)
+                                .addComponent(btnCancelar))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addComponent(lblTipoUS)
+                        .addGap(18, 18, 18)
+                        .addComponent(cbxTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
+                .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtDui, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtContra, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19)
+                    .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(31, 31, 31)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
-                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txtDui, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtContra, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6))
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtCargo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10)))
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(txtCargo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
+                    .addComponent(txtPregunta, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
+                    .addComponent(txtRespuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTipoUS)
+                    .addComponent(cbxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(43, 43, 43)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCrearUsu)
                     .addComponent(btnGuardar)
                     .addComponent(btnCancelar)
-                    .addComponent(btnCrearUsu))
-                .addContainerGap())
+                    .addComponent(lblTipo)
+                    .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(51, 51, 51))
         );
 
         tableListUsuarios.setModel(new javax.swing.table.DefaultTableModel(
@@ -435,26 +532,28 @@ public class ListarUsuarios extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGap(0, 225, Short.MAX_VALUE))))
         );
 
         pack();
@@ -475,21 +574,22 @@ public class ListarUsuarios extends javax.swing.JFrame {
             btnCrearUsu.setVisible(false);
         if (fila >= 0) {
             jTextEditables();
+            
 
             this.txtID.setText(this.tableListUsuarios.getValueAt(fila, 0).toString());
             this.txtNombre.setText(this.tableListUsuarios.getValueAt(fila, 1).toString());
             this.txtApellido.setText(this.tableListUsuarios.getValueAt(fila, 2).toString());
             this.txtDui.setText(this.tableListUsuarios.getValueAt(fila, 3).toString());
-            this.txtUsuario.setText(this.tableListUsuarios.getValueAt(fila, 4).toString());
-            this.txtContra.setText(this.tableListUsuarios.getValueAt(fila, 5).toString());
-            this.txtTelefono.setText(this.tableListUsuarios.getValueAt(fila, 6).toString());
-            this.txtDireccion.setText(this.tableListUsuarios.getValueAt(fila, 7).toString());
-            this.txtCargo.setText(this.tableListUsuarios.getValueAt(fila, 8).toString());
-            txtUsuario.setEditable(false);
-
-           
+            this.txtCargo.setText(this.tableListUsuarios.getValueAt(fila, 4).toString());
+            this.txtTelefono.setText(this.tableListUsuarios.getValueAt(fila, 5).toString());
+            this.txtPregunta.setText(this.tableListUsuarios.getValueAt(fila, 6).toString());
+            this.txtRespuesta.setText(this.tableListUsuarios.getValueAt(fila, 7).toString());
+            //this.txtTelefono.setText(this.tableListUsuarios.getValueAt(fila, 8).toString());
             
-             btnGuardar.setEnabled(true);
+           //txtPregunta.setEditable(false);
+           cbxIDtipoUS();
+           
+            btnGuardar.setEnabled(true);
             btnGuardar.setVisible(true);
             txtID.setEnabled(false);
 
@@ -501,9 +601,10 @@ public class ListarUsuarios extends javax.swing.JFrame {
              */
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione una usuario de la tabla para poder editar su información");
-          
-
         }
+            //String usTipo = txtTipo.getText();
+           //int index = Integer.parseInt(lblTipo.getText());
+           //this.cbxTipo.setSelectedItem(Integer.parseInt(lblTipo.getText()));
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -513,25 +614,29 @@ public class ListarUsuarios extends javax.swing.JFrame {
 //            JOptionPane.showMessageDialog(null, "Los campos nombre, apellido, usuario y contraseña son obligatorios");
 //        }
         String pass = new String(this.txtContra.getText());
-        if (txtUsuario.getText().equals("") || txtNombre.getText().equals("")
-                || txtApellido.getText().equals("") || txtUsuario.getText().equals("")) {
+        int usID = Integer.parseInt(txtID.getText());
+        
+        if (txtPregunta.getText().equals("") || txtNombre.getText().equals("")
+                || txtApellido.getText().equals("") || txtPregunta.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Hay campos vacios, debe completar todos los campos");
         } else if (txtNombre.getText().length() < 6
                 || txtApellido.getText().length() < 6) {
             JOptionPane.showMessageDialog(null, "Los campos de Nombre y apellido deben de ser mayor a 6 caracteres");
-        } else if (txtUsuario.getText().length() < 8) {
+        } else if (txtDui.getText().length() < 8) {
             JOptionPane.showMessageDialog(null, "El campo usuario debe de ser mayor a 7 caracteres");
         } else {
             if (pass.length() >= 10) {
-
-                usr.setPasswd(pass);
-                usr.setNombre(txtNombre.getText());
-                usr.setApellido(txtApellido.getText());
-                usr.setDui(txtDui.getText());
-                usr.setTelefono(txtTelefono.getText());
-                usr.setDireccion(txtDireccion.getText());
-                usr.setCargo(txtCargo.getText());
-                usr.setId_usuario(Integer.parseInt(txtID.getText()));
+              
+                usr.setUsPasswd(pass);
+                usr.setUsNombre(txtNombre.getText());
+                usr.setUsApellido(txtApellido.getText());
+                usr.setUsDui(txtDui.getText());
+                usr.setUsCargo(txtCargo.getText());
+                usr.setUsTelefono(txtTelefono.getText());
+                usr.setUsPregunta(txtPregunta.getText());
+                usr.setUsRespuesta(txtRespuesta.getText());
+                //usr.setId_tipoUsuario(Integer.parseInt(txtpru.getText()));
+                usr.setId_usuario(usID);
                 if (controlUsu.modificarInfoUsuario(usr)) {
                     JOptionPane.showMessageDialog(null, "El Usuario se Edito con exito");
                     jTextBloqueados();
@@ -556,7 +661,6 @@ public class ListarUsuarios extends javax.swing.JFrame {
         btnCrearUsu.setVisible(true);
         btnGuardar.setEnabled(false);
         btnGuardar.setVisible(false);
-        txtUsuario.setEditable(true);
         txtID.setEnabled(false);
         txtNombre.requestFocus();
         
@@ -572,12 +676,15 @@ public class ListarUsuarios extends javax.swing.JFrame {
         limpiarCampos();
         
         if (fila >= 0) {
-            String UsrSeleccionado = this.tableListUsuarios.getValueAt(fila, 4).toString(); //Capturamos el usuario seleccionado
-
+            String usrNombre = this.tableListUsuarios.getValueAt(fila, 1).toString(); 
+            String usrApellido = this.tableListUsuarios.getValueAt(fila, 2).toString();
+            String usrDui = this.tableListUsuarios.getValueAt(fila, 3).toString();
+            String usrNombreCompleto = (usrNombre+" "+usrApellido); //Capturamos el usuario seleccionado
+            
             String id= (this.tableListUsuarios.getValueAt(fila, 0).toString());//Capturamos el id del usuario para poderlo eliminar
             this.usr.setId_usuario(Integer.parseInt(id));
-            int resultado = JOptionPane.showConfirmDialog(ListarUsuarios.this, "¿Esta seguro de querer ELIMINAR a " + UsrSeleccionado
-                    + "de la lista de Usuarios?", "Confirmación", JOptionPane.YES_NO_OPTION);
+            int resultado = JOptionPane.showConfirmDialog(ListarUsuarios.this, "¿Esta seguro de querer ELIMINAR a " + usrNombreCompleto + " con el numero de DUI: "
+                    + usrDui + " de la lista de Usuarios?", "Confirmación", JOptionPane.YES_NO_OPTION);
             if (resultado == JOptionPane.YES_OPTION) {
 
                 if (controlUsu.EliminarUsuario(this.usr)) {
@@ -597,27 +704,28 @@ public class ListarUsuarios extends javax.swing.JFrame {
     private void btnCrearUsuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearUsuActionPerformed
         // TODO add your handling code here:
         String pass = new String(this.txtContra.getText());
+        tipoUsuario tipoUsuario = (tipoUsuario) cbxTipo.getSelectedItem();
 
-        if (txtUsuario.getText().equals("") || txtNombre.getText().equals("")
-                || txtApellido.getText().equals("") || txtUsuario.getText().equals("")) {
+        if (txtPregunta.getText().equals("") || txtNombre.getText().equals("")
+                || txtApellido.getText().equals("") || txtPregunta.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Hay campos vacios, debe completar todos los campos");
-        } else if (txtNombre.getText().length() < 6
-                || txtApellido.getText().length() < 6) {
-            JOptionPane.showMessageDialog(null, "Los campos de Nombre y apellido deben de ser mayor a 6 caracteres");
-        } else if (txtUsuario.getText().length() < 8) {
-            JOptionPane.showMessageDialog(null, "El campo usuario debe de ser mayor a 7 caracteres");
+        } else if (txtNombre.getText().length() < 3
+                || txtApellido.getText().length() < 4) {
+            JOptionPane.showMessageDialog(null, "El campo de Nombre y/o Apellido deben contener mas caracteres");
+        } else if (txtDui.getText().length() < 9) {
+            JOptionPane.showMessageDialog(null, "El campo DUI debe tener un total de 9 caracteres");
         } else {
             if (pass.length() >= 10) {
-                if (controlUsu.existeUsuario(txtUsuario.getText()) == 0) { //Validamos que no existan usuarios duplicados
-                    usr.setuLogin(txtUsuario.getText());
-                    usr.setPasswd(pass);
-                    usr.setNombre(txtNombre.getText());
-                    usr.setApellido(txtApellido.getText());
-                    usr.setId_tipoUsuario(2);
-                    usr.setDui(" ");
-                    usr.setTelefono(" ");
-                    usr.setDireccion(" ");
-                    usr.setCargo(" ");
+                if (controlUsu.existeUsuario(txtDui.getText()) == 0) { //Validamos que no existan usuarios duplicados
+                    usr.setUsDui(txtDui.getText());
+                    usr.setUsPasswd(pass);
+                    usr.setUsNombre(txtNombre.getText());
+                    usr.setUsApellido(txtApellido.getText());
+                    usr.setId_tipoUsuario(tipoUsuario.getId_tipoUsuario());
+                    usr.setUsPregunta(txtPregunta.getText());
+                    usr.setUsTelefono(txtTelefono.getText());
+                    usr.setUsRespuesta(txtRespuesta.getText());
+                    usr.setUsCargo(txtCargo.getText());
                     if (controlUsu.registrar(usr)) {
                         JOptionPane.showMessageDialog(null, "El Usuario se creo con exito");
                         jTextBloqueados();
@@ -696,6 +804,7 @@ public class ListarUsuarios extends javax.swing.JFrame {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JComboBox<tipoUsuario> cbxTipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -711,16 +820,19 @@ public class ListarUsuarios extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblTipo;
+    private javax.swing.JLabel lblTipoUS;
     private javax.swing.JTable tableListUsuarios;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtBuscar;
     private javax.swing.JTextField txtCargo;
     private javax.swing.JTextField txtContra;
-    private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtDui;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtPregunta;
+    private javax.swing.JTextField txtRespuesta;
     private javax.swing.JTextField txtTelefono;
-    private javax.swing.JTextField txtUsuario;
+    private javax.swing.JTextField txtTipo;
     // End of variables declaration//GEN-END:variables
 }

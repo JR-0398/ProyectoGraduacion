@@ -38,66 +38,108 @@ public class RegistrarUsuario extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
         txtApellido = new javax.swing.JTextField();
-        txtUsuario = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        txtDui = new javax.swing.JTextField();
+        btnRegistrar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         txtPassword = new javax.swing.JPasswordField();
         txtConfirmarPassword = new javax.swing.JPasswordField();
+        jLabel6 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Nombre");
 
         jLabel2.setText("Apellido");
 
-        jLabel3.setText("Usuario");
+        jLabel3.setText("Numero de DUI");
 
         jLabel4.setText("Contraseña");
 
         jLabel5.setText("Confirmar Contraseña");
 
-        jButton1.setText("Completar registro");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
             }
         });
 
-        jButton2.setText("Cancelar");
+        txtApellido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtApellidoKeyTyped(evt);
+            }
+        });
+
+        txtDui.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDuiKeyTyped(evt);
+            }
+        });
+
+        btnRegistrar.setText("Completar registro");
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarActionPerformed(evt);
+            }
+        });
+
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyTyped(evt);
+            }
+        });
+
+        txtConfirmarPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtConfirmarPasswordKeyTyped(evt);
+            }
+        });
+
+        jLabel6.setText("Datos necesarios para el registro de un usuario");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel2)))
                 .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2)
-                        .addGap(80, 80, 80))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtApellido)
-                    .addComponent(txtUsuario)
+                    .addComponent(txtDui)
                     .addComponent(txtPassword)
                     .addComponent(txtConfirmarPassword))
-                .addGap(99, 99, 99))
+                .addGap(88, 88, 88))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(158, 158, 158)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnRegistrar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCancelar))
+                    .addComponent(jLabel6))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(40, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -108,20 +150,20 @@ public class RegistrarUsuario extends javax.swing.JFrame {
                 .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDui, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
                 .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtConfirmarPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(41, 41, 41)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(51, Short.MAX_VALUE))
+                    .addComponent(btnRegistrar)
+                    .addComponent(btnCancelar))
+                .addGap(35, 35, 35))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -129,22 +171,22 @@ public class RegistrarUsuario extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(39, 39, 39)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(22, 22, 22)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         // TODO add your handling code here:
         
         ControlUsuario modSql = new ControlUsuario();
@@ -153,49 +195,127 @@ public class RegistrarUsuario extends javax.swing.JFrame {
         String pass = new String(txtPassword.getPassword());
         String passCon = new String(txtConfirmarPassword.getPassword());
 
-        if (txtUsuario.getText().equals("") || txtNombre.getText().equals("")
-                || txtApellido.getText().equals("") || txtUsuario.getText().equals("")) {
+        if (txtDui.getText().equals("") || txtNombre.getText().equals("")
+                || txtApellido.getText().equals("") || pass.equals("") || passCon.equals("")) {
             JOptionPane.showMessageDialog(null, "Hay campos vacios, debe completar todos los campos");
         } 
-        else if(txtNombre.getText().length()<6 || 
-                txtApellido.getText().length()<6){
-            JOptionPane.showMessageDialog(null, "Los campos de Nombre y apellido deben de ser mayor a 6 caracteres");
+        else if(txtNombre.getText().length()<3 || 
+                txtApellido.getText().length()<4){
+            JOptionPane.showMessageDialog(null, "Ingresar Nombre y/o Apellido con mas caracteres de los actuales");
         } 
-        else if(txtUsuario.getText().length()<8)
+        else if(txtDui.getText().length()<9)
         {
-            JOptionPane.showMessageDialog(null, "El campo usuario debe de ser mayor a 7 caracteres");
-        }
-        else {
+            JOptionPane.showMessageDialog(null, "El campo DUI debe tener un total de 9 caracteres");
+        }else{
             if (pass.length() >= 10){
                 if (pass.equals(passCon)) {
-                   if(modSql.existeUsuario(txtUsuario.getText())==0){ //Validamos que no existan usuarios duplicados
-                    mod.setuLogin(txtUsuario.getText());
-                    mod.setPasswd(pass);
-                    mod.setNombre(txtNombre.getText());
-                    mod.setApellido(txtApellido.getText());
+                   if(modSql.existeUsuario(txtDui.getText())==0){ //Validamos que no existan usuarios duplicados
+                    mod.setUsDui(txtDui.getText());
+                    mod.setUsPasswd(pass);
+                    mod.setUsNombre(txtNombre.getText());
+                    mod.setUsApellido(txtApellido.getText());
                     mod.setId_tipoUsuario(2);
-                    mod.setDui(" ");
-                    mod.setTelefono(" ");
-                    mod.setDireccion(" ");
-                    mod.setCargo(" ");                                      
+                    mod.setUsPregunta("¿Cuantos huesos tiene el cuerpo humano?");
+                    mod.setUsRespuesta("206 huesos");
+                    mod.setUsCargo("no info.");
+                    mod.setUsTelefono("no info. ");
                     if (modSql.registrar(mod)) {
-                        JOptionPane.showMessageDialog(null, "El Usuario se creo con exito");
+                        JOptionPane.showMessageDialog(null, "El Usuario se creo con exito, recuerde completar su informacion en su perfil");
+                        Menu newForm = new Menu();
+                        //newForm.obtenerDuiRU(txtDui.getText());
+                        newForm.setVisible(true);
+                        this.dispose();
                     } else {
                         JOptionPane.showMessageDialog(null, "Error al guardar el usuario, revise la informacion.");
                     }
-                   }
-                   else{
+                   }else{
                    JOptionPane.showMessageDialog(null, "El usuario ya existe");}
-                } 
-                else {
+                }else{
                     JOptionPane.showMessageDialog(null, "La contraseña no coincide");
                 }                                                
-            }
-            else{
+            }else{
                 JOptionPane.showMessageDialog(null, "La contraseña debe de ser mayor a 9 caracteres");
             }
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        // TODO add your handling code here:
+        char vNombre = evt.getKeyChar();
+        boolean asciiBS = vNombre == 8;
+        boolean asciiSP = vNombre == 32;
+        boolean asciiSH = vNombre == 16;
+        int cNombre = txtNombre.getText().length(); 
+        
+        if(!Character.isLetter(vNombre) && !asciiBS && !asciiSP && !asciiSH){
+            //getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "Este campo solo permite ingresar letras, Segun el formato de cada Nombre", "Formato de dato invalido", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+        if(cNombre >= 15){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtApellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidoKeyTyped
+        // TODO add your handling code here:
+        char vApellido = evt.getKeyChar();
+        boolean asciiBS = vApellido == 8;
+        boolean asciiSP = vApellido == 32;
+        boolean asciiSH = vApellido == 16;
+        int cApellido = txtApellido.getText().length(); 
+        
+        if(!Character.isLetter(vApellido) && !asciiBS && !asciiSP && !asciiSH){
+            //getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "Este campo solo permite ingresar letras, Segun el formato de cada Apellido", "Formato de dato invalido", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+        if(cApellido >= 15){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtApellidoKeyTyped
+
+    private void txtDuiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDuiKeyTyped
+        // TODO add your handling code here:
+        char vDui = evt.getKeyChar();
+        boolean asciiBS = vDui == 8;
+        int cDui = txtDui.getText().length(); 
+        
+        if(!Character.isDigit(vDui) && !asciiBS){
+            //getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "Este campo solo permite ingresar numeros, segun el formato del numero de DUI", "Formato de dato invalido", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+        if(cDui >= 9){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtDuiKeyTyped
+
+    private void txtPasswordKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyTyped
+        // TODO add your handling code here:
+        int cPass = String.valueOf(txtPassword.getPassword()).length();
+        
+        if(cPass >= 12){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtPasswordKeyTyped
+
+    private void txtConfirmarPasswordKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtConfirmarPasswordKeyTyped
+        // TODO add your handling code here:
+        int cPasswd = String.valueOf(txtConfirmarPassword.getPassword()).length();
+        
+        if(cPasswd >= 12){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtConfirmarPasswordKeyTyped
 
     /**
      * @param args the command line arguments
@@ -233,18 +353,19 @@ public class RegistrarUsuario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnRegistrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JPasswordField txtConfirmarPassword;
+    private javax.swing.JTextField txtDui;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JPasswordField txtPassword;
-    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

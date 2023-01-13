@@ -10,14 +10,14 @@ package com.modelo;
  */
 public class usuario {
     private int id_usuario;
-    private String nombre;
-    private String apellido;
-    private String dui;
-    private String uLogin;
-    private String passwd;
-    private String telefono;
-    private String direccion;
-    private String cargo;
+    private String usNombre;
+    private String usApellido;
+    private String usDui;
+    private String usPasswd;
+    private String usPregunta;
+    private String usRespuesta;
+    private String usCargo;
+    private String usTelefono;
     private int id_tipoUsuario;
 
     public int getId_usuario() {
@@ -28,68 +28,68 @@ public class usuario {
         this.id_usuario = id_usuario;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getUsNombre() {
+        return usNombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setUsNombre(String usNombre) {
+        this.usNombre = usNombre;
     }
 
-    public String getApellido() {
-        return apellido;
+    public String getUsApellido() {
+        return usApellido;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public void setUsApellido(String usApellido) {
+        this.usApellido = usApellido;
     }
 
-    public String getDui() {
-        return dui;
+    public String getUsDui() {
+        return usDui;
     }
 
-    public void setDui(String dui) {
-        this.dui = dui;
+    public void setUsDui(String usDui) {
+        this.usDui = usDui;
     }
 
-    public String getuLogin() {
-        return uLogin;
+    public String getUsPasswd() {
+        return usPasswd;
     }
 
-    public void setuLogin(String uLogin) {
-        this.uLogin = uLogin;
+    public void setUsPasswd(String usPasswd) {
+        this.usPasswd = usPasswd;
     }
 
-    public String getPasswd() {
-        return passwd;
+    public String getUsPregunta() {
+        return usPregunta;
     }
 
-    public void setPasswd(String passwd) {
-        this.passwd = passwd;
+    public void setUsPregunta(String usPregunta) {
+        this.usPregunta = usPregunta;
     }
 
-    public String getTelefono() {
-        return telefono;
+    public String getUsRespuesta() {
+        return usRespuesta;
     }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setUsRespuesta(String usRespuesta) {
+        this.usRespuesta = usRespuesta;
     }
 
-    public String getDireccion() {
-        return direccion;
+    public String getUsCargo() {
+        return usCargo;
     }
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
+    public void setUsCargo(String usCargo) {
+        this.usCargo = usCargo;
     }
 
-    public String getCargo() {
-        return cargo;
+    public String getUsTelefono() {
+        return usTelefono;
     }
 
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
+    public void setUsTelefono(String usTelefono) {
+        this.usTelefono = usTelefono;
     }
 
     public int getId_tipoUsuario() {

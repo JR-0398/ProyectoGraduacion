@@ -10,8 +10,8 @@ package com.modelo;
  */
 public class categoria {
     private int id_categoria;
-    private String categoria;
-    private String descripcionCat;
+    private String catNombre;
+    private String catDescripcion;
 
     public categoria() {
     }
@@ -19,13 +19,13 @@ public class categoria {
     public categoria(int id_categoria) {
         this.id_categoria = id_categoria;
     }
-    
-    public categoria(int id_categoria, String categoria, String descripcionCat) {
+
+    public categoria(int id_categoria, String catNombre, String catDescripcion) {
         this.id_categoria = id_categoria;
-        this.categoria = categoria;
-        this.descripcionCat = descripcionCat;
+        this.catNombre = catNombre;
+        this.catDescripcion = catDescripcion;
     }
-    
+
     public int getId_categoria() {
         return id_categoria;
     }
@@ -34,19 +34,19 @@ public class categoria {
         this.id_categoria = id_categoria;
     }
 
-    public String getCategoria() {
-        return categoria;
+    public String getCatNombre() {
+        return catNombre;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setCatNombre(String catNombre) {
+        this.catNombre = catNombre;
     }
 
-    public String getDescripcionCat() {
-        return descripcionCat;
+    public String getCatDescripcion() {
+        return catDescripcion;
     }
 
-    public void setDescripcionCat(String descripcionCat) {
-        this.descripcionCat = descripcionCat;
+    public void setCatDescripcion(String catDescripcion) {
+        this.catDescripcion = catDescripcion;
     }
 }

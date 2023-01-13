@@ -153,7 +153,7 @@ public class Registarse extends javax.swing.JFrame {
             if (pass.length() >= 10){
                 if (pass.equals(passCon)) {
                    if(modSql.existeUsuario(txtUsuario.getText())==0){ //Validamos que no existan usuarios duplicados
-                    mod.setuLogin(txtUsuario.getText());
+                    /*mod.setuLogin(txtUsuario.getText());
                     mod.setPasswd(pass);
                     mod.setNombre(txtNombre.getText());
                     mod.setApellido(txtApellido.getText());
@@ -161,7 +161,7 @@ public class Registarse extends javax.swing.JFrame {
                     mod.setDui(" ");
                     mod.setTelefono(" ");
                     mod.setDireccion(" ");
-                    mod.setCargo(" ");                                      
+                    mod.setCargo(" ");*/                                      
                     if (modSql.registrar(mod)) {
                         JOptionPane.showMessageDialog(null, "El Usuario se creo con exito");
                     } else {

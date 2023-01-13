@@ -26,18 +26,18 @@ public class ControlUsuario extends cConexion {
         Connection con = conexion();
 
         String sql
-                = "INSERT INTO usuario (nombre, apellido, uLogin,passwd,id_tipoUsuario,dui,telefono,direccion,cargo) VALUES(?,?,?,?,?,?,?,?,?)";  //enviar informacion de dui nula
+                = "INSERT INTO usuario (usNombre, usApellido, usPasswd, id_tipoUsuario, usDui, usTelefono, usCargo, usPregunta, usRespuesta) VALUES(?,?,?,?,?,?,?,?,?)";  //enviar informacion de dui nula
         try {
             ps = con.prepareStatement(sql);
-            ps.setString(1, usr.getNombre());
-            ps.setString(2, usr.getApellido());
-            ps.setString(3, usr.getuLogin());
-            ps.setString(4, usr.getPasswd());
-            ps.setInt(5, usr.getId_tipoUsuario());
-            ps.setString(6, usr.getDui());
-            ps.setString(7, usr.getTelefono());
-            ps.setString(8, usr.getDireccion());
-            ps.setString(9, usr.getCargo());
+            ps.setString(1, usr.getUsNombre());
+            ps.setString(2, usr.getUsApellido());
+            ps.setString(3, usr.getUsPasswd());
+            ps.setInt(4, usr.getId_tipoUsuario());
+            ps.setString(5, usr.getUsDui());
+            ps.setString(6, usr.getUsTelefono());
+            ps.setString(7, usr.getUsCargo());
+            ps.setString(8, usr.getUsPregunta());
+            ps.setString(9, usr.getUsRespuesta());
             ps.execute();
             con.close();
             return true;
@@ -47,16 +47,16 @@ public class ControlUsuario extends cConexion {
         }
     }
 
-    public int existeUsuario(String uLogin) {
+    public int existeUsuario(String usDui) {
         PreparedStatement ps = null;
         ResultSet rs = null;
         Connection con = conexion();
 
         String sql
-                = "SELECT count(id_usuario) FROM usuario WHERE uLogin=?";
+                = "SELECT count(id_usuario) FROM usuario WHERE usDui=?";
         try {
             ps = con.prepareStatement(sql);
-            ps.setString(1, uLogin);
+            ps.setString(1, usDui);
             rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1);
@@ -73,19 +73,21 @@ public class ControlUsuario extends cConexion {
     public boolean modificarInfoUsuario(usuario user) {
         PreparedStatement ps = null;
         Connection con = conexion();
-
-        String sql
-                = "UPDATE usuario SET  nombre=?, apellido=?,dui=?, passwd=?,telefono=?,direccion=?,cargo=? WHERE id_usuario=?";
+        
+        //String sql = "UPDATE usuario SET usNombre=?, id_tipoUsuario=? WHERE id_usuario=?";
+        String sql = "UPDATE usuario SET usNombre=?, usApellido=?, usDui=?, usPasswd=?, usTelefono=?, usCargo=?, usPregunta=?, usRespuesta=?, id_tipoUsuario=? WHERE id_usuario=?";
         try {
             ps = con.prepareStatement(sql);
-            ps.setString(1, user.getNombre());
-            ps.setString(2, user.getApellido());
-            ps.setString(3, user.getDui());
-            ps.setNString(4, user.getPasswd());
-            ps.setString(5, user.getTelefono());
-            ps.setString(6, user.getDireccion());
-            ps.setString(7, user.getCargo());
-            ps.setInt(8, user.getId_usuario());
+            ps.setString(1, user.getUsNombre());
+            ps.setString(2, user.getUsApellido());
+            ps.setString(3, user.getUsDui());
+            ps.setString(4, user.getUsPasswd());
+            ps.setString(5, user.getUsTelefono());
+            ps.setString(6, user.getUsCargo());
+            ps.setString(7, user.getUsPregunta());
+            ps.setString(8, user.getUsRespuesta());
+            ps.setInt(9, user.getId_tipoUsuario());
+            ps.setInt(10, user.getId_usuario());
 
             int filas = ps.executeUpdate();
             con.close();
@@ -128,21 +130,21 @@ public class ControlUsuario extends cConexion {
         List<usuario> data = new ArrayList<>();
         PreparedStatement ps = null;
         Connection con = conexion();
-        String sql = "SELECT id_usuario,nombre,apellido,dui,uLogin,passwd,telefono,direccion,cargo FROM usuario";
+        String sql = "SELECT id_usuario, usNombre, usApellido, usDui, usPasswd, usTelefono, usCargo, usPregunta, usRespuesta FROM usuario";
         try {
             ps = con.prepareStatement(sql);
             res = ps.executeQuery();
             while (res.next()) {
                 usuario user = new usuario();
                 user.setId_usuario(res.getInt("id_usuario"));
-                user.setNombre(res.getString("nombre"));
-                user.setApellido(res.getString("apellido"));
-                user.setDui(res.getString("dui"));
-                user.setuLogin(res.getString("uLogin"));
-                user.setPasswd(res.getString("passwd"));
-                user.setTelefono(res.getString("telefono"));
-                user.setDireccion(res.getString("direccion"));
-                user.setCargo(res.getString("cargo"));
+                user.setUsNombre(res.getString("usNombre"));
+                user.setUsApellido(res.getString("usApellido"));
+                user.setUsDui(res.getString("usDui"));
+                user.setUsPasswd(res.getString("usPasswd"));
+                user.setUsTelefono(res.getString("usTelefono"));
+                user.setUsCargo(res.getString("usCargo"));
+                user.setUsPregunta(res.getString("usPregunta"));
+                user.setUsRespuesta(res.getString("usRespuesta"));
                 data.add(user);
             }
             con.close();
@@ -159,21 +161,21 @@ public class ControlUsuario extends cConexion {
         PreparedStatement ps = null;
         Connection con = conexion();
         String sql = 
-        "SELECT id_usuario,nombre,apellido,dui,uLogin,passwd,telefono,direccion,cargo FROM usuario WHERE nombre LIKE '"+Buscar+"%' OR apellido LIKE '"+Buscar+"%' OR cargo LIKE '"+Buscar+"%' OR direccion LIKE '"+Buscar+"%' OR dui LIKE '"+Buscar+"%' OR uLogin LIKE '"+Buscar+"%'";
+        "SELECT id_usuario, usNombre, usApellido, usDui, usPasswd, usTelefono, usCargo, usPregunta, usRespuesta FROM usuario WHERE usNombre LIKE '"+Buscar+"%' OR usApellido LIKE '"+Buscar+"%' OR usCargo LIKE '"+Buscar+"%' OR usTelefono LIKE '"+Buscar+"%' OR usDui LIKE '"+Buscar+"%'";
         try {
             ps = con.prepareStatement(sql);
             res = ps.executeQuery();
             while (res.next()) {
                 usuario user = new usuario();
                 user.setId_usuario(res.getInt("id_usuario"));
-                user.setNombre(res.getString("nombre"));
-                user.setApellido(res.getString("apellido"));
-                user.setDui(res.getString("dui"));
-                user.setuLogin(res.getString("uLogin"));
-                user.setPasswd(res.getString("passwd"));
-                user.setTelefono(res.getString("telefono"));
-                user.setDireccion(res.getString("direccion"));
-                user.setCargo(res.getString("cargo"));
+                user.setUsNombre(res.getString("usNombre"));
+                user.setUsApellido(res.getString("usApellido"));
+                user.setUsDui(res.getString("usDui"));
+                user.setUsPasswd(res.getString("usPasswd"));
+                user.setUsTelefono(res.getString("usTelefono"));
+                user.setUsCargo(res.getString("usCargo"));
+                user.setUsPregunta(res.getString("usPregunta"));
+                user.setUsRespuesta(res.getString("usRespuesta"));
                 data.add(user);
             }
             con.close();
@@ -183,5 +185,4 @@ public class ControlUsuario extends cConexion {
         }
         return data;
     }
-
 }

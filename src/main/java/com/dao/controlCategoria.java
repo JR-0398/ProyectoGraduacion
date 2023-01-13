@@ -13,8 +13,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 //import javax.swing.JOptionPane;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,41 +22,73 @@ import java.util.List;
  */
 public class controlCategoria extends cConexion {
     
-    categoria cat = new categoria();
+    /*categoria cat = new categoria();
     Connection con = conexion();
     List <categoria> datos = new ArrayList<>();
     String sql = "";
     PreparedStatement ps;
-    ResultSet res;
+    ResultSet res;*/
    
     public List<?> mostrarCategorias() {
-       this.sql = "SELECT * FROM categoria";
-       try {
-           this.ps = this.con.prepareStatement(this.sql);
-           this.res = this.ps.executeQuery();
-           while (this.res.next()) {
-               this.datos.add(new categoria(
-                       this.res.getInt("id_categoria"),
-                       this.res.getString("categoria"),
-                       this.res.getString("descripcionCat")
-               ));
-           }
-           //this.con.close();
-           //this.res.close();
-       }catch (SQLException e){
-           System.out.println("Excepciones controladas: "+e.getMessage());
+        Connection con = conexion();
+        PreparedStatement ps;
+        ResultSet res;
+        List <categoria> datos = new ArrayList<>();
+        
+        String sql = "SELECT id_categoria, catNombre, catDescripcion FROM categoria";
+        try {
+            ps = con.prepareStatement(sql);
+            res = ps.executeQuery();
+            while (res.next()){
+                datos.add(new categoria(
+                        res.getInt("id_categoria"),
+                        res.getString("catNombre"),
+                        res.getString("catDescripcion")));
+            }
+           con.close();
+           res.close();
+        }catch (SQLException e){
+            System.out.println("Excepciones controladas: "+e.getMessage());
        }
-       return this.datos;            
+       return datos;            
     }
     
-    public boolean ingresarCategorias(categoria cat) {
-        this.sql = "INSERT INTO categoria (categoria, descripcionCat) VALUES(?, ?)";
+    public List<?> buscarCategoria(String Buscar) {
+        Connection con = conexion();
+        PreparedStatement ps;
+        ResultSet res;
+        List <categoria> datos = new ArrayList<>();
+        
+        String sql = "SELECT id_categoria, catNombre, catDescripcion FROM categoria WHERE catNombre LIKE '%"+Buscar+"%'";
         try {
-            this.ps = this.con.prepareStatement(sql);
-            this.ps.setString(1,cat.getCategoria());
-            this.ps.setString(2,cat.getDescripcionCat());
-            this.ps.executeUpdate();
-            //this.con.close();
+            ps = con.prepareStatement(sql);
+            res = ps.executeQuery();
+            while (res.next()) {
+                categoria cat = new categoria();
+                cat.setId_categoria(res.getInt("id_categoria"));
+                cat.setCatNombre(res.getString("catNombre"));
+                cat.setCatDescripcion(res.getString("catDescripcion"));
+                datos.add(cat);
+            }
+            con.close();
+            res.close();
+        }catch (SQLException e){
+            System.out.println("Excepciones controladas: "+e.getMessage());
+        }
+        return datos;
+    }
+
+    public boolean ingresarCategorias(categoria cat) {
+        Connection con = conexion();
+        PreparedStatement ps;
+        
+        String sql = "INSERT INTO categoria (catNombre, catDescripcion) VALUES (?, ?)";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1,cat.getCatNombre());
+            ps.setString(2,cat.getCatDescripcion());
+            ps.execute();
+            con.close();
             return true;     
         } catch (SQLException e) {
             //Logger.getLogger(controlCategoria.class.getName()).log(Level.SEVERE,null,e);
@@ -65,17 +97,47 @@ public class controlCategoria extends cConexion {
         }
     }
     
-   public boolean editarCategoria(categoria cat){
-       this.sql = "UPDATE categoria SET categoria=?, descripcionCat=? WHERE id_categoria=?";
+    public int existeUsuario(String catNombre) {
+        Connection con = conexion();
+        PreparedStatement ps;
+        ResultSet rs;
+        
+        String sql = "SELECT count(id_categoria) FROM categoria WHERE catNombre=?";
         try {
-            this.ps=this.con.prepareStatement(sql);
-            this.ps.setString(1,cat.getCategoria());
-            this.ps.setString(2,cat.getDescripcionCat());
-            this.ps.setInt(3, cat.getId_categoria());
-            this.ps.executeUpdate();
-            //this.con.close();
-            return true;
-        } catch (SQLException e) {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, catNombre);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            con.close();
+            rs.close();
+            return 1;
+        }catch (SQLException e){
+            Logger.getLogger(ControlUsuario.class.getName()).log(Level.SEVERE, null, e);
+            System.out.println("Excepciones controladas: "+e.getMessage());
+            return 1;
+        }
+    }
+    
+   public boolean editarCategoria(categoria cat){
+       Connection con = conexion();
+       PreparedStatement ps;
+       
+       String sql = "UPDATE categoria SET catNombre=?, catDescripcion=? WHERE id_categoria=?";
+       try {
+           ps = con.prepareStatement(sql);
+           ps.setString(1,cat.getCatNombre());
+           ps.setString(2,cat.getCatDescripcion());
+           ps.setInt(3, cat.getId_categoria());
+           int filas = ps.executeUpdate();
+           con.close();
+           if (filas > 0){
+               return true;
+           }else{
+               return false;
+           }
+       }catch (SQLException e){
             System.out.println("Excepciones controladas: "+e.getMessage());
             return false;
         }
@@ -83,17 +145,24 @@ public class controlCategoria extends cConexion {
     }
  
    public boolean EliminarCategoria(categoria cat){
-        this.sql = "DELETE FROM categoria WHERE id_categoria=?";
-        try {
-            this.ps=this.con.prepareStatement(sql);
-            this.ps.setInt(1,cat.getId_categoria());
-            this.ps.executeUpdate();
-            //this.con.close();
-            return true; 
-        } catch (SQLException e) {
-            //JOptionPane.showMessageDialog(null,"" );
-            System.out.println("Excepciones controladas: "+e.getMessage());
-            return false;
+       Connection con = conexion();
+       PreparedStatement ps;
+       
+       String sql = "DELETE FROM categoria WHERE id_categoria=?";
+       try {
+           ps = con.prepareStatement(sql);
+           ps.setInt(1,cat.getId_categoria());
+           int filas = ps.executeUpdate();
+           con.close();
+           if (filas > 0){
+               return true;
+            }else{
+               return false;
+            }
+       }catch (SQLException e){
+           //JOptionPane.showMessageDialog(null,"" );
+           System.out.println("Excepciones controladas: "+e.getMessage());
+           return false;
         }
     }  
 }
