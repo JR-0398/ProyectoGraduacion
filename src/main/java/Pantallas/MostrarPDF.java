@@ -135,7 +135,9 @@ public class MostrarPDF extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Guardar y Leer PDF");
+        setBackground(new java.awt.Color(204, 255, 255));
 
+        tabla.setBackground(new java.awt.Color(204, 204, 255));
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -154,6 +156,7 @@ public class MostrarPDF extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tabla);
 
+        btnnuevo.setBackground(new java.awt.Color(204, 255, 255));
         btnnuevo.setText("Nuevo");
         btnnuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -161,6 +164,7 @@ public class MostrarPDF extends javax.swing.JFrame {
             }
         });
 
+        btnguardar.setBackground(new java.awt.Color(204, 255, 255));
         btnguardar.setText("Guardar");
         btnguardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -168,6 +172,7 @@ public class MostrarPDF extends javax.swing.JFrame {
             }
         });
 
+        btnmodificar.setBackground(new java.awt.Color(204, 255, 255));
         btnmodificar.setText("Modificar");
         btnmodificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -175,6 +180,7 @@ public class MostrarPDF extends javax.swing.JFrame {
             }
         });
 
+        btneliminar.setBackground(new java.awt.Color(204, 255, 255));
         btneliminar.setText("Eliminar");
         btneliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -182,6 +188,7 @@ public class MostrarPDF extends javax.swing.JFrame {
             }
         });
 
+        btncancelar.setBackground(new java.awt.Color(204, 255, 255));
         btncancelar.setText("Cancelar");
         btncancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -197,9 +204,9 @@ public class MostrarPDF extends javax.swing.JFrame {
                 .addComponent(btnnuevo)
                 .addGap(29, 29, 29)
                 .addComponent(btnguardar)
-                .addGap(28, 28, 28)
+                .addGap(18, 18, 18)
                 .addComponent(btnmodificar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addComponent(btneliminar)
                 .addGap(27, 27, 27)
                 .addComponent(btncancelar))
@@ -215,6 +222,8 @@ public class MostrarPDF extends javax.swing.JFrame {
                     .addComponent(btncancelar))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
+
+        jPanel2.setBackground(new java.awt.Color(200, 237, 253));
 
         btnseleccionar.setText("Seleccionar...");
         btnseleccionar.addActionListener(new java.awt.event.ActionListener() {
@@ -252,9 +261,10 @@ public class MostrarPDF extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(btnseleccionar))
-                .addGap(0, 2, Short.MAX_VALUE))
+                .addGap(0, 16, Short.MAX_VALUE))
         );
 
+        jLabel3.setBackground(new java.awt.Color(200, 237, 253));
         jLabel3.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Guardar PDF en la base de Datos");
@@ -272,9 +282,9 @@ public class MostrarPDF extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel3)
-                .addGap(14, 14, 14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE))
