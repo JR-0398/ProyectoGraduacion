@@ -185,4 +185,27 @@ public class ControlUsuario extends cConexion {
         }
         return data;
     }
+    
+    public boolean modificarContraUsuario(usuario user) {
+        PreparedStatement ps = null;
+        Connection con = conexion();
+        
+        //String sql = "UPDATE usuario SET usNombre=?, id_tipoUsuario=? WHERE id_usuario=?";
+        String sql = "UPDATE usuario SET usPasswd=?  WHERE id_usuario=?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, user.getUsPasswd());
+            ps.setInt(2, user.getId_usuario());
+            int filas = ps.executeUpdate();
+            con.close();
+            if (filas > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("Exepciones Controladas" + e.getMessage());
+            return false;
+        }
+    }
 }

@@ -623,7 +623,7 @@ public class ListarUsuarios extends javax.swing.JFrame {
                 || txtApellido.getText().length() < 6) {
             JOptionPane.showMessageDialog(null, "Los campos de Nombre y apellido deben de ser mayor a 6 caracteres");
         } else if (txtDui.getText().length() < 8) {
-            JOptionPane.showMessageDialog(null, "El campo usuario debe de ser mayor a 7 caracteres");
+            JOptionPane.showMessageDialog(null, "El campo Dui debe de ser mayor a 8 caracteres");
         } else {
             if (pass.length() >= 10) {
               

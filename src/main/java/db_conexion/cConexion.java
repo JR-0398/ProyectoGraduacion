@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  */
 public class cConexion {
     
-       Connection Conexion = null;
+   Connection Conexion = null;
     
     private final String user = "root";
     private final String pass = "admin";
