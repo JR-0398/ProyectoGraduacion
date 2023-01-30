@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -26,7 +27,7 @@ public class RestaurarCopiaDeSeguridad extends javax.swing.JFrame {
     private void bloquearDatos(){
         txtRutaRES.setEnabled(false);
         btnCrearRES.setEnabled(false);
-        btnCancelarRES.setEnabled(false);  
+        //btnCancelarRES.setEnabled(false);  
     }
     
     private void cambioDatos(){
@@ -46,7 +47,9 @@ public class RestaurarCopiaDeSeguridad extends javax.swing.JFrame {
             con = DriverManager.getConnection(url,user,pass);
             Statement s = con.createStatement();
             s.execute(sql);
-            s.execute(sql);
+            //ps.close();
+            //res.close();
+            con.close();
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "Ha ocurrido un error: "+e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
         }  
@@ -62,6 +65,9 @@ public class RestaurarCopiaDeSeguridad extends javax.swing.JFrame {
             con = DriverManager.getConnection(url,user,pass);
             Statement s = con.createStatement();
             s.execute(sql);
+            //ps.close();
+            //res.close();
+            con.close();
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "Ha ocurrido un error: "+e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
         }  
@@ -73,6 +79,7 @@ public class RestaurarCopiaDeSeguridad extends javax.swing.JFrame {
      */
     public RestaurarCopiaDeSeguridad() {
         initComponents();
+        setIconImage(new ImageIcon(getClass().getResource("/images/banana.png")).getImage());
         bloquearDatos();
     }
 
@@ -92,7 +99,9 @@ public class RestaurarCopiaDeSeguridad extends javax.swing.JFrame {
         btnCrearRES = new javax.swing.JButton();
         btnCancelarRES = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Restaurar copia de seguriadad");
+        setResizable(false);
 
         lblRuta.setText("Ruta para restaurar la copia de seguridad");
 
@@ -103,7 +112,7 @@ public class RestaurarCopiaDeSeguridad extends javax.swing.JFrame {
             }
         });
 
-        btnCrearRES.setText("Crear copia de seguridad");
+        btnCrearRES.setText("Restaurar copia de seguridad");
         btnCrearRES.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCrearRESActionPerformed(evt);
@@ -132,7 +141,7 @@ public class RestaurarCopiaDeSeguridad extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnCancelarRES, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnRutaRES, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

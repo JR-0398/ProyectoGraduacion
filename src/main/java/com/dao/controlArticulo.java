@@ -33,12 +33,12 @@ public class controlArticulo extends cConexion {
         ResultSet res;
         List <articulo> datos = new ArrayList<>();
         
-        String sql = "SELECT id_articulo, artCodigo, artNombre, artCantidad, artEstado, artComentario, id_usuario, id_categoria FROM articulo";
+        String sql = "SELECT articulo.id_articulo, articulo.artCodigo, articulo.artNombre, articulo.artCantidad, articulo.artEstado, articulo.artComentario, articulo.id_usuario, usuario.usDui, articulo.id_categoria, categoria.catNombre FROM articulo LEFT JOIN categoria ON articulo.id_categoria = categoria.id_categoria LEFT JOIN usuario ON articulo.id_usuario = usuario.id_usuario";
         try {
             ps = con.prepareStatement(sql);
             res = ps.executeQuery();
             while (res.next()) {
-                datos.add(new articulo(
+                datos.add(new articulo (
                         res.getInt("id_articulo"),
                         res.getString("artCodigo"),
                         res.getString("artNombre"),
@@ -46,7 +46,9 @@ public class controlArticulo extends cConexion {
                         res.getString("artEstado"),
                         res.getString("artComentario"),
                         res.getInt("id_usuario"),
-                        res.getInt("id_categoria")));
+                        res.getInt("id_categoria"),
+                        res.getString("usDui"),
+                        res.getString("catNombre")));
             }
             con.close();
             res.close();
@@ -62,7 +64,7 @@ public class controlArticulo extends cConexion {
         ResultSet res;
         List <articulo> datos = new ArrayList<>();
         
-        String sql = "SELECT id_articulo, artCodigo, artNombre, artCantidad, artEstado, artComentario, id_usuario, id_categoria FROM articulo WHERE artCodigo LIKE '%"+Buscar+"%' OR artNombre LIKE '%"+Buscar+"%'";
+        String sql = "SELECT articulo.id_articulo, articulo.artCodigo, articulo.artNombre, articulo.artCantidad, articulo.artEstado, articulo.artComentario, articulo.id_usuario, usuario.usDui, articulo.id_categoria, categoria.catNombre FROM articulo LEFT JOIN categoria ON articulo.id_categoria = categoria.id_categoria LEFT JOIN usuario ON articulo.id_usuario = usuario.id_usuario WHERE articulo.artCodigo LIKE '%"+Buscar+"%' OR articulo.artNombre LIKE '%"+Buscar+"%' OR articulo.artCantidad LIKE '%"+Buscar+"%' OR articulo.artEstado LIKE '%"+Buscar+"%'";
         try {
             ps = con.prepareStatement(sql);
             res = ps.executeQuery();
@@ -76,6 +78,8 @@ public class controlArticulo extends cConexion {
                 art.setArtComentario(res.getString("artComentario"));
                 art.setId_usuario(res.getInt("id_usuario"));
                 art.setId_categoria(res.getInt("id_categoria"));
+                art.setUsDui(res.getString("usDui"));
+                art.setCatNombre(res.getString("catNombre"));
                 datos.add(art);
             }
             con.close();
@@ -137,17 +141,17 @@ public class controlArticulo extends cConexion {
        Connection con = conexion();
        PreparedStatement ps;
        
-       String sql = "UPDATE articulo SET artCodigo=?, artNombre=?, artCantidad=?, artEstado=?, artComentario, id_usuario=?, id_categoria=? WHERE id_articulo=?";
+       String sql = "UPDATE articulo SET artCodigo=?, artNombre=?, artCantidad=?, artEstado=?, artComentario=?, id_usuario=?, id_categoria=? WHERE id_articulo=?";
        try {
            ps = con.prepareStatement(sql);
            ps.setString(1,art.getArtCodigo());
            ps.setString(2,art.getArtNombre());
            ps.setInt(3, art.getArtCantidad());
            ps.setString(4,art.getArtEstado());
-           ps.setString(4,art.getArtComentario());
-           ps.setInt(5,art.getId_usuario());
-           ps.setInt(6, art.getId_categoria());
-           ps.setInt(7, art.getId_articulo());
+           ps.setString(5,art.getArtComentario());
+           ps.setInt(6,art.getId_usuario());
+           ps.setInt(7, art.getId_categoria());
+           ps.setInt(8, art.getId_articulo());
            int filas = ps.executeUpdate();
            con.close();
            if (filas > 0){

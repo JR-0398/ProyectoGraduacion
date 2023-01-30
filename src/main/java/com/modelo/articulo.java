@@ -17,6 +17,8 @@ public class articulo {
     private String artComentario;
     private int id_usuario;
     private int id_categoria;
+    private String usDui;
+    private String catNombre;
 
     public articulo() {
     }
@@ -25,7 +27,7 @@ public class articulo {
         this.id_articulo = id_articulo;
     }
 
-    public articulo(int id_articulo, String artCodigo, String artNombre, int artCantidad, String artEstado, String artComentario, int id_usuario, int id_categoria) {
+    public articulo(int id_articulo, String artCodigo, String artNombre, int artCantidad, String artEstado, String artComentario, int id_usuario, int id_categoria, String usDui, String catNombre) {
         this.id_articulo = id_articulo;
         this.artCodigo = artCodigo;
         this.artNombre = artNombre;
@@ -34,6 +36,8 @@ public class articulo {
         this.artComentario = artComentario;
         this.id_usuario = id_usuario;
         this.id_categoria = id_categoria;
+        this.usDui = usDui;
+        this.catNombre = catNombre;
     }
 
     public int getId_articulo() {
@@ -98,6 +102,22 @@ public class articulo {
 
     public void setId_categoria(int id_categoria) {
         this.id_categoria = id_categoria;
+    }
+
+    public String getUsDui() {
+        return usDui;
+    }
+    
+    public void setUsDui(String usDui) {
+        this.usDui = usDui;
+    }
+
+    public String getCatNombre() {
+        return catNombre;
+    }
+
+    public void setCatNombre(String catNombre) {
+        this.catNombre = catNombre;
     }
     
 }

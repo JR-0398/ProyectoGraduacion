@@ -4,6 +4,9 @@
  */
 package Pantallas;
 
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Banos
@@ -12,11 +15,18 @@ public class MenuAdmin extends javax.swing.JFrame {
     private int type_user, usId;
     private String usNombre, usApellido, usCargo, usDui;
     
+    private void hideIdsArt(){
+        lblID.setVisible(false);
+        lblTipo.setVisible(false);
+    }
+    
     /**
      * Creates new form MenuAdmin
      */
     public MenuAdmin() {
         initComponents();
+        setIconImage(new ImageIcon(getClass().getResource("/images/banana.png")).getImage());
+        hideIdsArt();
     }
     
     public void obtenerDatos(int type_user, String usNombre, String usApellido, String usDui, String usCargo, int usId){
@@ -52,6 +62,7 @@ public class MenuAdmin extends javax.swing.JFrame {
         lblTipo = new javax.swing.JLabel();
         btnPerfil = new javax.swing.JButton();
         lblInfo = new javax.swing.JLabel();
+        btnCambiarPass = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         btn1 = new javax.swing.JButton();
         btn2 = new javax.swing.JButton();
@@ -64,6 +75,7 @@ public class MenuAdmin extends javax.swing.JFrame {
         btnIS = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Menu administrador");
 
         jPanel2.setBackground(new java.awt.Color(200, 237, 253));
 
@@ -90,6 +102,14 @@ public class MenuAdmin extends javax.swing.JFrame {
         lblInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/informacion.png"))); // NOI18N
         lblInfo.setText("INFORMACION DEL USUARIO");
 
+        btnCambiarPass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/contra.png"))); // NOI18N
+        btnCambiarPass.setText("Cambiar contraseña");
+        btnCambiarPass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCambiarPassActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -97,21 +117,21 @@ public class MenuAdmin extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblInfo))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(lblID)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnCambiarPass, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblNombre)
                             .addComponent(lblCargo)
                             .addComponent(lblDui)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblID)
-                                    .addComponent(lblTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(btnPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblInfo)))
-                .addContainerGap(33, Short.MAX_VALUE))
+                            .addComponent(btnPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,18 +144,21 @@ public class MenuAdmin extends javax.swing.JFrame {
                 .addComponent(lblDui)
                 .addGap(18, 18, 18)
                 .addComponent(lblCargo)
-                .addGap(29, 29, 29)
+                .addGap(18, 18, 18)
                 .addComponent(btnPerfil)
-                .addGap(34, 34, 34)
-                .addComponent(lblID)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblTipo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnCambiarPass, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblID)
+                    .addComponent(lblTipo))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
 
         jPanel1.setBackground(new java.awt.Color(200, 237, 253));
 
         btn1.setBackground(new java.awt.Color(255, 255, 153));
+        btn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user21.png"))); // NOI18N
         btn1.setText("PERFIL DEL USUARIO");
         btn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -144,6 +167,7 @@ public class MenuAdmin extends javax.swing.JFrame {
         });
 
         btn2.setBackground(new java.awt.Color(255, 255, 153));
+        btn2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/inventaio.png"))); // NOI18N
         btn2.setText("CONTROL DE ARTICULOS");
         btn2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -151,7 +175,11 @@ public class MenuAdmin extends javax.swing.JFrame {
             }
         });
 
-        btn3.setText("jButton3");
+        btn3.setBackground(new java.awt.Color(255, 255, 153));
+        btn3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/inventaio.png"))); // NOI18N
+        btn3.setText("CONTROL DE ARCHIVOS PDF");
+        btn3.setMaximumSize(new java.awt.Dimension(237, 39));
+        btn3.setMinimumSize(new java.awt.Dimension(237, 39));
         btn3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn3ActionPerformed(evt);
@@ -159,6 +187,7 @@ public class MenuAdmin extends javax.swing.JFrame {
         });
 
         btn4.setBackground(new java.awt.Color(255, 255, 153));
+        btn4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/inventaio.png"))); // NOI18N
         btn4.setText("CONTROL DE USUARIO");
         btn4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -167,6 +196,7 @@ public class MenuAdmin extends javax.swing.JFrame {
         });
 
         btn5.setBackground(new java.awt.Color(255, 255, 153));
+        btn5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/inventaio.png"))); // NOI18N
         btn5.setText("CONTROL DE CATEGORIAS");
         btn5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -174,10 +204,20 @@ public class MenuAdmin extends javax.swing.JFrame {
             }
         });
 
-        btn6.setText("jButton6");
+        btn6.setBackground(new java.awt.Color(255, 255, 153));
+        btn6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/inventaio.png"))); // NOI18N
+        btn6.setText("CONTROL DE LA INFORMACION");
+        btn6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn6ActionPerformed(evt);
+            }
+        });
 
         btnExit.setBackground(new java.awt.Color(243, 133, 133));
+        btnExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/out.png"))); // NOI18N
         btnExit.setText("SALIR DEL SISTEMA");
+        btnExit.setMaximumSize(new java.awt.Dimension(237, 39));
+        btnExit.setMinimumSize(new java.awt.Dimension(237, 39));
         btnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExitActionPerformed(evt);
@@ -189,6 +229,7 @@ public class MenuAdmin extends javax.swing.JFrame {
         lblPanel.setText("PANEL DE CONTROL");
 
         btnIS.setBackground(new java.awt.Color(255, 255, 153));
+        btnIS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/refresh2.png"))); // NOI18N
         btnIS.setText("CAMBIAR DE USUARIO");
         btnIS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -200,56 +241,54 @@ public class MenuAdmin extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn6)
-                    .addComponent(btn3))
-                .addGap(14, 14, 14))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btn4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(50, 50, 50)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(67, 67, 67)
-                                .addComponent(btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnIS)
-                                    .addComponent(btn4))
-                                .addGap(67, 67, 67)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btn5))))
-                        .addGap(0, 129, Short.MAX_VALUE))))
+                                    .addComponent(btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btn5, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(62, 62, 62)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btn6)
+                                    .addComponent(btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnIS, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(349, 349, 349)
+                        .addComponent(lblPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(42, 42, 42)
                 .addComponent(lblPanel)
-                .addGap(45, 45, 45)
+                .addGap(63, 63, 63)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(112, 112, 112)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btn5, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn6, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn1)
-                    .addComponent(btn2))
-                .addGap(29, 29, 29)
-                .addComponent(btn3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn4)
-                    .addComponent(btn5))
-                .addGap(1, 1, 1)
-                .addComponent(btn6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnIS)
-                    .addComponent(btnExit))
-                .addGap(69, 69, 69))
+                    .addComponent(btnIS, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(52, 52, 52))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -257,16 +296,21 @@ public class MenuAdmin extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(88, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -274,13 +318,16 @@ public class MenuAdmin extends javax.swing.JFrame {
 
     private void btn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn3ActionPerformed
         // TODO add your handling code here:
-        //System.out.println("Prueba ");
+        MostrarPDF newForm = new MostrarPDF();
+        newForm.setLocationRelativeTo(null);
+        newForm.setVisible(true);
     }//GEN-LAST:event_btn3ActionPerformed
 
     private void btnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPerfilActionPerformed
         // TODO add your handling code here:
         PerfilUsuario newForm = new PerfilUsuario();
         newForm.obtenerDuiRU(usDui);
+        newForm.setLocationRelativeTo(null);
         newForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnPerfilActionPerformed
@@ -289,6 +336,7 @@ public class MenuAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
         PerfilUsuario newForm = new PerfilUsuario();
         newForm.obtenerDuiRU(usDui);
+        newForm.setLocationRelativeTo(null);
         newForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn1ActionPerformed
@@ -297,14 +345,12 @@ public class MenuAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
         ListarUsuarios newForm = new ListarUsuarios();
         newForm.setVisible(true);
-        this.dispose();
     }//GEN-LAST:event_btn4ActionPerformed
 
     private void btn5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn5ActionPerformed
         // TODO add your handling code here:
         categorias newForm = new categorias();
         newForm.setVisible(true);
-        this.dispose();
     }//GEN-LAST:event_btn5ActionPerformed
 
     private void btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2ActionPerformed
@@ -312,12 +358,12 @@ public class MenuAdmin extends javax.swing.JFrame {
         Productos newForm = new Productos();
         newForm.obtenerDato(usId);
         newForm.setVisible(true);
-        this.dispose();
     }//GEN-LAST:event_btn2ActionPerformed
 
     private void btnISActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnISActionPerformed
         // TODO add your handling code here:
         InicioSesion newForm = new InicioSesion();
+        newForm.setLocationRelativeTo(null);
         newForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnISActionPerformed
@@ -326,6 +372,29 @@ public class MenuAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_btnExitActionPerformed
+
+    private void btn6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn6ActionPerformed
+        // TODO add your handling code here:
+        MenuDB newForm = new MenuDB();
+        newForm.setLocationRelativeTo(null);
+        newForm.setVisible(true);
+    }//GEN-LAST:event_btn6ActionPerformed
+
+    private void btnCambiarPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarPassActionPerformed
+        // TODO add your handling code here:
+        String usNombreC = (usNombre+" "+usApellido);
+        int resp = JOptionPane.showConfirmDialog(null, "¿Desea "+usNombreC+" cambiar la contraseña?", "Cambio de contraseña", JOptionPane.YES_NO_OPTION);
+        if (resp==JOptionPane.YES_OPTION){
+            CambiarPass newForm = new CambiarPass();
+            String usID = Integer.toString(usId);
+            newForm.obtenerDato(usID);
+            newForm.setVisible(true);
+            newForm.setLocationRelativeTo(null);
+            this.dispose();
+        }else{
+            JOptionPane.showMessageDialog(null, "El cambio de contraseña ha sido cancelado", "Cambio de contraseña cancelado", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnCambiarPassActionPerformed
 
     /**
      * @param args the command line arguments
@@ -369,6 +438,7 @@ public class MenuAdmin extends javax.swing.JFrame {
     private javax.swing.JButton btn4;
     private javax.swing.JButton btn5;
     private javax.swing.JButton btn6;
+    private javax.swing.JButton btnCambiarPass;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnIS;
     private javax.swing.JButton btnPerfil;

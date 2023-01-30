@@ -1,4 +1,4 @@
-/*
+ /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
@@ -7,16 +7,13 @@ package Pantallas;
 import com.dao.controlArticulo;
 import com.modelo.articulo;
 import db_conexion.cConexion;
-//import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JFrame;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -28,7 +25,7 @@ public class Productos extends javax.swing.JFrame {
     cConexion con = new cConexion();
     int id_categoria, usId;
     String categoria;
-    String[] columnas = {"ID", "CODIGO", "NOMBRE", "CANTIDAD", "ESTADO", "COMENTARIO", "USUARIO", "CATEGORIA"};
+    String[] columnas = {"ID", "CODIGO", "NOMBRE", "CANTIDAD", "ESTADO", "COMENTARIO", "USID", "CATID", "USUARIO", "CATEGORIA"};
     DefaultTableModel model = new DefaultTableModel(columnas,0){
         @Override 
         public boolean isCellEditable(int row, int column) {
@@ -39,12 +36,12 @@ public class Productos extends javax.swing.JFrame {
     List<articulo> datos = new ArrayList<>();
     articulo art = new articulo();
     
-    /*private void listarTbArt() {
+    private void listarTbArt() {
         tbListarArt.getTableHeader().setReorderingAllowed(false);
         this.model.setRowCount(0);
         datos.clear();
         datos = (List<articulo>) controlArt.mostrarArticulos();
-        Object[] obj = new Object[8];
+        Object[] obj = new Object[10];
         for (articulo fila : datos) {
             obj[0] = fila.getId_articulo();
             obj[1] = fila.getArtCodigo();
@@ -54,10 +51,12 @@ public class Productos extends javax.swing.JFrame {
             obj[5] = fila.getArtComentario();
             obj[6] = fila.getId_usuario();
             obj[7] = fila.getId_categoria();
+            obj[8] = fila.getUsDui();
+            obj[9] = fila.getCatNombre();
             this.model.addRow(obj);
         }
         this.tbListarArt.setModel(model);
-    }*/
+    }
     
     private void BuscarDatos(){
         tbListarArt.getTableHeader().setReorderingAllowed(false);
@@ -65,7 +64,7 @@ public class Productos extends javax.swing.JFrame {
         datos.clear();
         String frase = txtBuscar.getText();
         datos = (List<articulo>) controlArt.buscarArticulo(frase);
-        Object[] obj = new Object[8];
+        Object[] obj = new Object[10];
         for (articulo fila : datos) {
             obj[0] = fila.getId_articulo();
             obj[1] = fila.getArtCodigo();
@@ -75,6 +74,8 @@ public class Productos extends javax.swing.JFrame {
             obj[5] = fila.getArtComentario();
             obj[6] = fila.getId_usuario();
             obj[7] = fila.getId_categoria();
+            obj[8] = fila.getUsDui();
+            obj[9] = fila.getCatNombre();
             model.addRow(obj);
         }
         tbListarArt.setModel(model);
@@ -83,13 +84,17 @@ public class Productos extends javax.swing.JFrame {
     private void limpiarArt(){
         txtCodigo.setText("");
         txtNombre.setText("");
+        txtCantidad.setText("1");
         txtComentario.setText("");
+        cbxEstado.setSelectedIndex(0);
+        cbxCategoria.setSelectedIndex(0);
     }
     
     private void bloquearArt(){
         txtCodigo.setEnabled(false);
         txtNombre.setEnabled(false);
         txtCantidad.setEnabled(false);
+        txtCantidad.setText("1");
         cbxEstado.setEnabled(false);
         txtComentario.setEnabled(false);
         cbxCategoria.setEnabled(false);
@@ -106,8 +111,25 @@ public class Productos extends javax.swing.JFrame {
         cbxCategoria.setEnabled(true); 
     }
     
+    private void hideIdsArt(){
+        lblIdArticulo.setVisible(false);
+        lblIdUser.setVisible(false);
+        lblUserLogin.setVisible(false);
+    }
+    
+    private void hideTb(){
+        tbListarArt.getColumnModel().getColumn(0).setMinWidth(1);
+        tbListarArt.getColumnModel().getColumn(0).setMaxWidth(1);
+        tbListarArt.getColumnModel().getColumn(0).setWidth(1);
+        tbListarArt.getColumnModel().getColumn(6).setMinWidth(1);
+        tbListarArt.getColumnModel().getColumn(6).setMaxWidth(1);
+        tbListarArt.getColumnModel().getColumn(6).setWidth(1);
+        tbListarArt.getColumnModel().getColumn(7).setMinWidth(1);
+        tbListarArt.getColumnModel().getColumn(7).setMaxWidth(1);
+        tbListarArt.getColumnModel().getColumn(7).setWidth(1);
+    }
+    
     private void cargarCbxCat(){
-       //cConexion con = new cConexion();
        String sql = "SELECT catNombre FROM categoria";
        PreparedStatement ps;
        ResultSet res;
@@ -119,18 +141,17 @@ public class Productos extends javax.swing.JFrame {
                for (int i=0;i<1;i++){
                    dato[i]=(res.getObject(i+1));
                    this.cbxCategoria.addItem(String.valueOf(dato[i]));
-               } 
-           //while (res.next()) {
-               ///cbxCategoria.addItem(res.getString("categoria"));
+               }
+               //ps.close();
+               //res.close();
+               con.conexion().close();
            }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error: "+e.toString(), " ¡¡ ERROR !!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error: "+e.toString(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }
     
      public void idCategoria(){
-       //cConexion con = new cConexion();
-       //String cat = cbxCategoria.getSelectedItem().toString();
        String sql = "SELECT id_categoria FROM categoria WHERE catNombre = '"+cbxCategoria.getSelectedItem()+"'";
        PreparedStatement ps;
        ResultSet res;
@@ -140,16 +161,17 @@ public class Productos extends javax.swing.JFrame {
             if(res.next()) {
                 id_categoria = res.getInt("id_categoria");
             } else {
-                JOptionPane.showMessageDialog(null, "Ha ocurrido un error", "¡¡ ERROR !!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
+            //ps.close();
+            //res.close();
+            con.conexion().close();
         } catch(SQLException e) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error: "+e.toString(), " ¡¡ ERROR !!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error: "+e.toString(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }  
     }
      
      public void nombreCat(){
-       //cConexion con = new cConexion();
-       //String cat = cbxCategoria.getSelectedItem().toString();
        String sql = "SELECT catNombre FROM categoria WHERE id_categoria = '"+id_categoria+"'";
        PreparedStatement ps;
        ResultSet res;
@@ -159,10 +181,13 @@ public class Productos extends javax.swing.JFrame {
             if(res.next()) {
                 categoria = res.getString("catNombre");
             } else {
-                JOptionPane.showMessageDialog(null, "Ha ocurrido un error", "¡¡ ERROR !!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
+            //ps.close();
+            //res.close();
+            con.conexion().close();
         } catch(SQLException e) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error: "+e.toString(), " ¡¡ ERROR !!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error: "+e.toString(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }  
     }
 
@@ -171,11 +196,13 @@ public class Productos extends javax.swing.JFrame {
      */
     public Productos() {
         initComponents();
-        //listarTbArt();
-        cargarCbxCat();
-        //idCategoria();
-        BuscarDatos();
+        setIconImage(new ImageIcon(getClass().getResource("/images/banana.png")).getImage());
         bloquearArt();
+        hideIdsArt();
+        listarTbArt();
+        cargarCbxCat();
+        hideTb();
+        //idCategoria();  
     }
     
     public void obtenerDato(int usId){
@@ -198,7 +225,6 @@ public class Productos extends javax.swing.JFrame {
         lblNombreArt = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
         lblCantidad = new javax.swing.JLabel();
-        txtCantidad = new javax.swing.JSpinner();
         lblEstado = new javax.swing.JLabel();
         cbxEstado = new javax.swing.JComboBox<>();
         lblCategoria = new javax.swing.JLabel();
@@ -214,6 +240,7 @@ public class Productos extends javax.swing.JFrame {
         lblIdArticulo = new javax.swing.JLabel();
         lblIdUser = new javax.swing.JLabel();
         lblUserLogin = new javax.swing.JLabel();
+        txtCantidad = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbListarArt = new javax.swing.JTable();
@@ -222,32 +249,36 @@ public class Productos extends javax.swing.JFrame {
         btnBuscar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
-        btnPerfil = new javax.swing.JButton();
-        btnCat = new javax.swing.JButton();
-        btnMenu = new javax.swing.JButton();
         lblInfo = new javax.swing.JLabel();
+        btnRecargar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Control de productos");
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 255));
 
         lblCodigo.setText("Código");
 
-        txtCodigo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCodigoActionPerformed(evt);
+        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCodigoKeyTyped(evt);
             }
         });
 
         lblNombreArt.setText("Nombre");
 
-        lblCantidad.setText("Cantidad");
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
 
-        txtCantidad.setModel(new javax.swing.SpinnerNumberModel(1, 1, 9999, 1));
+        lblCantidad.setText("Cantidad");
 
         lblEstado.setText("Estado");
 
-        cbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Dañado", "En reparación", "Inactivo" }));
+        cbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Dañado", "Bodega", " " }));
 
         lblCategoria.setText("Categoria");
 
@@ -255,6 +286,11 @@ public class Productos extends javax.swing.JFrame {
 
         txtComentario.setColumns(20);
         txtComentario.setRows(5);
+        txtComentario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtComentarioKeyTyped(evt);
+            }
+        });
         jScrollPane2.setViewportView(txtComentario);
 
         btnGuardar.setBackground(new java.awt.Color(255, 218, 172));
@@ -297,6 +333,12 @@ public class Productos extends javax.swing.JFrame {
 
         lblUserLogin.setText("ID");
 
+        txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCantidadKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -305,7 +347,13 @@ public class Productos extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblComentario)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblComentario)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(lblIdArticulo)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblIdUser))
+                            .addComponent(lblUserLogin))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -323,35 +371,24 @@ public class Productos extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cbxCategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cbxEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtCantidad)
                             .addComponent(txtNombre)
                             .addComponent(txtCodigo)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(lblDetalleArt)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(lblIdArticulo)
-                                        .addGap(26, 26, 26)
-                                        .addComponent(lblIdUser)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(lblUserLogin))
+                                    .addComponent(lblDetalleArt)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btnActualizar)))
-                                .addGap(0, 22, Short.MAX_VALUE)))))
+                                .addGap(0, 22, Short.MAX_VALUE))
+                            .addComponent(txtCantidad))))
                 .addGap(24, 24, 24))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDetalleArt)
-                    .addComponent(lblIdArticulo)
-                    .addComponent(lblIdUser)
-                    .addComponent(lblUserLogin))
+                .addComponent(lblDetalleArt)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCodigo)
@@ -364,13 +401,20 @@ public class Productos extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCantidad)
                     .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblEstado)
                     .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblComentario)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblComentario)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblIdArticulo)
+                            .addComponent(lblIdUser))
+                        .addGap(18, 18, 18)
+                        .addComponent(lblUserLogin))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -435,21 +479,16 @@ public class Productos extends javax.swing.JFrame {
             }
         });
 
-        btnPerfil.setBackground(new java.awt.Color(255, 218, 172));
-        btnPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/perfill.png"))); // NOI18N
-        btnPerfil.setText("Perfil");
-
-        btnCat.setBackground(new java.awt.Color(255, 218, 172));
-        btnCat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/inventaio.png"))); // NOI18N
-        btnCat.setText("Categoria");
-
-        btnMenu.setBackground(new java.awt.Color(255, 218, 172));
-        btnMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/panel.png"))); // NOI18N
-        btnMenu.setText("Menu Principal");
-
         lblInfo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/informacion.png"))); // NOI18N
         lblInfo.setText("INFORMACION");
+
+        btnRecargar.setText("Recargar");
+        btnRecargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRecargarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -458,13 +497,6 @@ public class Productos extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(btnPerfil)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnMenu)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCat)
-                        .addGap(29, 29, 29))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblInfo)
@@ -478,7 +510,9 @@ public class Productos extends javax.swing.JFrame {
                         .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 573, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnRecargar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 573, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -496,11 +530,8 @@ public class Productos extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnPerfil)
-                    .addComponent(btnCat)
-                    .addComponent(btnMenu))
-                .addGap(15, 15, 15))
+                .addComponent(btnRecargar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -527,33 +558,37 @@ public class Productos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCodigoActionPerformed
-
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
         idCategoria();
         if(txtCodigo.getText().equals("")||txtNombre.getText().equals("") || txtComentario.getText().equals("")){
-            JOptionPane.showMessageDialog(null, "Ingrese todos los datos solicitados !!");
+            JOptionPane.showMessageDialog(null, "Verifique la informacion ingresada, actualmente existen datos solicitados que estan vacios", "Datos vacios", JOptionPane.ERROR_MESSAGE);
+        }else if(txtCantidad.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "La cantidad esta vacia, verifique el dato e ingreselo numevamente segun el formato", "Dato vacio", JOptionPane.ERROR_MESSAGE);
+        }else if(txtCodigo.getText().length() < 15){
+            JOptionPane.showMessageDialog(null, "El codigo debe tener 15 o mas caracteres", "Codigo incompleto", JOptionPane.WARNING_MESSAGE);
+        }else if(txtNombre.getText().length() < 5){
+            JOptionPane.showMessageDialog(null, "El nombre del articulo debe tener 5 o mas caracteres", "Nombre de articulo incompleto", JOptionPane.WARNING_MESSAGE);
         }else{
-            art.setArtCodigo(txtCodigo.getText());
-            art.setArtNombre(txtNombre.getText());
-            art.setArtCantidad(Integer.parseInt(txtCantidad.getValue().toString()));
-            art.setArtEstado(cbxEstado.getSelectedItem().toString());
-            art.setArtComentario(txtComentario.getText());
-            art.setId_usuario(Integer.valueOf(lblUserLogin.getText()));
-            art.setId_categoria(id_categoria);
-            if (controlArt.ingresarArticulos(art)){
-                JOptionPane.showMessageDialog(this,"Categoria guardada con exito !!");
-                //listarTbArt();
-                //limpiarArt();
-                BuscarDatos();
-                bloquearArt();
-                limpiarArt();
-                btnNuevo.setEnabled(true);
+            if (controlArt.existeArticulo(txtCodigo.getText()) == 0) {
+                art.setArtCodigo(txtCodigo.getText());
+                art.setArtNombre(txtNombre.getText());
+                art.setArtCantidad(Integer.parseInt(txtCantidad.getText()));
+                art.setArtEstado(cbxEstado.getSelectedItem().toString());
+                art.setArtComentario(txtComentario.getText());
+                art.setId_usuario(Integer.parseInt(lblUserLogin.getText()));
+                art.setId_categoria(id_categoria);
+                if (controlArt.ingresarArticulos(art)){
+                    JOptionPane.showMessageDialog(this,"El articulo ha sido creada", "Articulo guardada", JOptionPane.INFORMATION_MESSAGE);
+                    listarTbArt();
+                    bloquearArt();
+                    limpiarArt();
+                    btnNuevo.setEnabled(true);
+                }else{
+                    JOptionPane.showMessageDialog(this,"Error al guardar el articulo, revise la informacion.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }else{
-                JOptionPane.showMessageDialog(this,"Error al insertar");
+                JOptionPane.showMessageDialog(null, "El articulo ya existe, verifique la informacion","Articulo duplicado", JOptionPane.WARNING_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -580,7 +615,7 @@ public class Productos extends javax.swing.JFrame {
             btnActualizar.setEnabled(true);
             txtCodigo.setText(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),1).toString());
             txtNombre.setText(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),2).toString());
-            txtCantidad.setValue(Integer.parseInt(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),3).toString()));
+            txtCantidad.setText(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),3).toString());
             cbxEstado.setSelectedItem(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),4).toString());
             txtComentario.setText(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),5).toString());
             lblIdUser.setText(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),6).toString());
@@ -589,24 +624,13 @@ public class Productos extends javax.swing.JFrame {
             cbxCategoria.setSelectedItem(categoria);
             lblIdArticulo.setText(tbListarArt.getValueAt(tbListarArt.getSelectedRow(),0).toString());
         }else{
-            JOptionPane.showMessageDialog(null, "Seleccione un articulo de la tabla para poder editar su información");
+            JOptionPane.showMessageDialog(null, "Seleccione un articulo de la tabla para poder editar su información", "Seleccione una fila de la tabla", JOptionPane.WARNING_MESSAGE);
         }
         
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        /*int resp = JOptionPane.showConfirmDialog(null, "¿Desea eliminar el articulo selecionado ??", "Advertencia !!", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
-        if (resp == JOptionPane.YES_OPTION)
-        {
-            if (this.controlArt.EliminarArticulo(this.art)){
-                JOptionPane.showMessageDialog(this,"Articulo eliminado !!");
-                listarTbArt();
-                //limpiarCat();
-            }else{
-                JOptionPane.showMessageDialog(this,"El articulo no se ha eliminado !!");
-            }
-        }*/
         
         int fila = tbListarArt.getSelectedRow();
         if (fila >= 0){
@@ -617,15 +641,14 @@ public class Productos extends javax.swing.JFrame {
             int resp = JOptionPane.showConfirmDialog(null, "¿Desea eliminar el articulo "+artNombre+" con el codigo: "+artCodigo+"?", "Advertencia", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
             if (resp==JOptionPane.YES_OPTION){
                 if (controlArt.EliminarArticulo(art)){
-                    JOptionPane.showMessageDialog(this,"Articulo eliminade");
-                    BuscarDatos();
-                    //listarTbCat();
+                    JOptionPane.showMessageDialog(this,"El articulo se ha eliminado", "Articulo elminado", JOptionPane.INFORMATION_MESSAGE);
+                    listarTbArt();
                 }
             }else{
-                JOptionPane.showMessageDialog(this,"el articulo no se ha eliminado");
+                JOptionPane.showMessageDialog(this,"Se ha cancelado la eliminacion para el articulo", "Cancelar, El articulo no se ha eliminado", JOptionPane.ERROR_MESSAGE);
             }
         }else{
-            JOptionPane.showMessageDialog(null, "Seleccione un articulo de la tabla para poder Eliminarlp");
+            JOptionPane.showMessageDialog(null, "Seleccione un articulo de la tabla para poder Eliminarlo", "Seleccione una fila de la tabla", JOptionPane.WARNING_MESSAGE);
         }
         
     }//GEN-LAST:event_btnEliminarActionPerformed
@@ -643,28 +666,36 @@ public class Productos extends javax.swing.JFrame {
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
         idCategoria();
-        if(txtCodigo.getText().equals("") || txtNombre.getText().equals("") || txtComentario.getText().equals("") ){
-            JOptionPane.showMessageDialog(null, "Ingrese todos los datos solicitados");
+        if(txtCodigo.getText().equals("")||txtNombre.getText().equals("") || txtComentario.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Verifique la informacion ingresada, actualmente existen datos solicitados que estan vacios", "Datos vacios", JOptionPane.ERROR_MESSAGE);
+        }else if(txtCantidad.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "La cantidad esta vacia, verifique el dato e ingreselo numevamente segun el formato", "Dato vacio", JOptionPane.ERROR_MESSAGE);
+        }else if(txtCodigo.getText().length() < 15){
+            JOptionPane.showMessageDialog(null, "El codigo debe tener 15 o mas caracteres", "Codigo incompleto", JOptionPane.WARNING_MESSAGE);
+        }else if(txtNombre.getText().length() < 5){
+            JOptionPane.showMessageDialog(null, "El nombre del articulo debe tener 5 o mas caracteres", "Nombre de articulo incompleto", JOptionPane.WARNING_MESSAGE);
         }else{
-            //art.setId_articulo(Integer.parseInt(this.lblIdArticulo.getText()));
+            //if (controlArt.existeArticulo(txtCodigo.getText()) == 0) {
+            art.setId_articulo(Integer.parseInt(lblIdArticulo.getText()));
             art.setArtCodigo(txtCodigo.getText());
             art.setArtNombre(txtNombre.getText());
-            art.setArtCantidad(Integer.parseInt(txtCantidad.getValue().toString()));
+            art.setArtCantidad(Integer.parseInt(txtCantidad.getText()));
             art.setArtEstado(cbxEstado.getSelectedItem().toString());
             art.setArtComentario(txtComentario.getText());
             art.setId_usuario(Integer.parseInt(lblIdUser.getText()));
             art.setId_categoria(id_categoria);
             if (this.controlArt.editarArticulo(art)){
-                JOptionPane.showMessageDialog(this,"Se ha modificado con exito!!");
-                //listarTbArt();
-                //limpiarCat();
-                BuscarDatos();
+                JOptionPane.showMessageDialog(this,"Se ha modificado el articulo", "Cambios realizados", JOptionPane.INFORMATION_MESSAGE);
+                listarTbArt();
                 bloquearArt();
                 limpiarArt();
                 btnActualizar.setEnabled(false);
             }else{
-                JOptionPane.showMessageDialog(this,"Ha ocurrido un error al modificar");
-            }
+                    JOptionPane.showMessageDialog(this,"No se ha modificado el articulo, revise la informacion y modifiquelo nuevamente", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            /*}else{
+                JOptionPane.showMessageDialog(null, "El articulo ya existe, verifique la informacion","Articulo duplicado", JOptionPane.WARNING_MESSAGE);
+            }*/
         }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
@@ -678,10 +709,71 @@ public class Productos extends javax.swing.JFrame {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
         BuscarDatos();
-        //listarTbCat();
         bloquearArt();
         limpiarArt();
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
+        // TODO add your handling code here:
+        char vCod = evt.getKeyChar();
+        boolean asciiBS = vCod == 8;
+        boolean asciiDS = vCod == 45;
+        int cCod = txtCodigo.getText().length(); 
+        
+        if(!Character.isDigit(vCod)&& !Character.isLetter(vCod) && !asciiBS && !asciiDS){
+            //getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "Segun el formato para el codigo, este campo solo permite ingresar letras o numero separados por un guion en medio", "Formato de dato invalido", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+        if(cCod >= 25){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCodigoKeyTyped
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        // TODO add your handling code here:
+        int cNombre = txtNombre.getText().length(); 
+        
+        if(cNombre >= 50){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtComentarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtComentarioKeyTyped
+        // TODO add your handling code here:
+        int cNombre = txtComentario.getText().length(); 
+        
+        if(cNombre >= 75){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtComentarioKeyTyped
+
+    private void txtCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyTyped
+        // TODO add your handling code here:
+        char vCantidad = evt.getKeyChar();
+        boolean asciiBS = vCantidad == 8;
+        int cCantidad = txtCantidad.getText().length();
+        //int nCantidad = Integer.parseInt(txtCantidad.getText());
+        //(nCantidad < 1 && nCantidad > 999 &&)
+        
+        if(!Character.isDigit(vCantidad) && !asciiBS){
+            //getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "Segun el formato para cantidad solo se puede ingresar numeros en un rango entre 1 a 9999", "Formato de dato invalido", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+        if(cCantidad >= 4){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCantidadKeyTyped
+
+    private void btnRecargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecargarActionPerformed
+        // TODO add your handling code here:
+        listarTbArt();
+        bloquearArt();
+        limpiarArt();
+    }//GEN-LAST:event_btnRecargarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -722,13 +814,11 @@ public class Productos extends javax.swing.JFrame {
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnCat;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton btnMenu;
     private javax.swing.JButton btnNuevo;
-    private javax.swing.JButton btnPerfil;
+    private javax.swing.JButton btnRecargar;
     private javax.swing.JComboBox<String> cbxCategoria;
     private javax.swing.JComboBox<String> cbxEstado;
     private javax.swing.JPanel jPanel1;
@@ -749,7 +839,7 @@ public class Productos extends javax.swing.JFrame {
     private javax.swing.JLabel lblUserLogin;
     private javax.swing.JTable tbListarArt;
     private javax.swing.JTextField txtBuscar;
-    private javax.swing.JSpinner txtCantidad;
+    private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextArea txtComentario;
     private javax.swing.JTextField txtNombre;

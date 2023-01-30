@@ -4,6 +4,8 @@
  */
 package Pantallas;
 
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author Banos
@@ -15,6 +17,7 @@ public class MenuDB extends javax.swing.JFrame {
      */
     public MenuDB() {
         initComponents();
+        setIconImage(new ImageIcon(getClass().getResource("/images/banana.png")).getImage());
     }
 
     /**
@@ -31,7 +34,9 @@ public class MenuDB extends javax.swing.JFrame {
         btnRES = new javax.swing.JButton();
         lblInfoDB = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Control de la informacion");
+        setResizable(false);
 
         btnBU.setText("Crear copia de seguridad");
         btnBU.addActionListener(new java.awt.event.ActionListener() {
@@ -54,26 +59,26 @@ public class MenuDB extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(58, 58, 58)
-                .addComponent(btnBU, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
-                .addComponent(btnRES)
-                .addGap(77, 77, 77))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(140, 140, 140)
+                .addGap(141, 141, 141)
                 .addComponent(lblInfoDB)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(55, 55, 55)
+                .addComponent(btnBU, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
+                .addComponent(btnRES, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(56, 56, 56))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addGap(24, 24, 24)
                 .addComponent(lblInfoDB)
-                .addGap(18, 18, 18)
+                .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnBU)
-                    .addComponent(btnRES))
-                .addContainerGap(60, Short.MAX_VALUE))
+                    .addComponent(btnBU, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRES, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -87,10 +92,10 @@ public class MenuDB extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -100,14 +105,12 @@ public class MenuDB extends javax.swing.JFrame {
         // TODO add your handling code here:
         CopiaDeSeguridad newForm = new CopiaDeSeguridad();
         newForm.setVisible(true);
-        this.dispose();
     }//GEN-LAST:event_btnBUActionPerformed
 
     private void btnRESActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRESActionPerformed
         // TODO add your handling code here:
         RestaurarCopiaDeSeguridad newForm = new RestaurarCopiaDeSeguridad();
         newForm.setVisible(true);
-        this.dispose();
     }//GEN-LAST:event_btnRESActionPerformed
 
     /**

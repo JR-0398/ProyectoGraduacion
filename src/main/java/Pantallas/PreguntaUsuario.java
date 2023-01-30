@@ -8,6 +8,7 @@ import db_conexion.cConexion;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -37,6 +38,9 @@ public class PreguntaUsuario extends javax.swing.JFrame {
             }else{
                 JOptionPane.showMessageDialog(null, "Ha ocurrido un error", "Error", JOptionPane.ERROR_MESSAGE);
             }
+            //ps.close();
+            //res.close();
+            con.conexion().close();
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "Ha ocurrido un error: "+e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
         }  
@@ -70,13 +74,20 @@ public class PreguntaUsuario extends javax.swing.JFrame {
        btnRespuesta.setEnabled(false);
     }
     
+    private void hideDatos(){
+        lblId.setVisible(false);
+        lblRespuestaDB.setVisible(false);
+    }
+    
 
     /**
      * Creates new form PreguntaUsuario
      */
     public PreguntaUsuario() {
         initComponents();
+        setIconImage(new ImageIcon(getClass().getResource("/images/banana.png")).getImage());
         bloquearDatos();
+        hideDatos();
     }
 
     /**
@@ -101,8 +112,11 @@ public class PreguntaUsuario extends javax.swing.JFrame {
         lblRespuesta = new javax.swing.JLabel();
         btnRespuesta = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        lblRepuestaInfo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Pregunta para cambiar contraseña");
+        setResizable(false);
 
         lblDui.setText("Ingresar el numero de DUI");
 
@@ -128,7 +142,7 @@ public class PreguntaUsuario extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(45, Short.MAX_VALUE)
+                .addContainerGap(39, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(lblDui)
@@ -176,34 +190,40 @@ public class PreguntaUsuario extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Responda la pregunta adecuadamente para poder cambiar su contraseña.");
+        jLabel1.setText("Responda a la pregunta con la respuesta correcta para cambiar la contraseña.");
+
+        lblRepuestaInfo.setText("Recuerde escribir la respuesta correctamente");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addGap(28, 28, 28)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblRespuesta)
-                                .addComponent(lblPregunta))
-                            .addGap(18, 18, 18)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtPregunta)
-                                .addComponent(txtRespuesta, javax.swing.GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)))
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addGap(143, 143, 143)
-                            .addComponent(btnRespuesta)))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblRespuesta)
+                                    .addComponent(lblPregunta))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtPregunta)
+                                    .addComponent(txtRespuesta, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblRepuestaInfo)))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(158, 158, 158)
+                        .addComponent(btnRespuesta)))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPregunta)
                     .addComponent(txtPregunta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -211,11 +231,11 @@ public class PreguntaUsuario extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblRespuesta)
                     .addComponent(txtRespuesta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblRepuestaInfo)
                 .addGap(18, 18, 18)
                 .addComponent(btnRespuesta)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -223,11 +243,11 @@ public class PreguntaUsuario extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -275,7 +295,7 @@ public class PreguntaUsuario extends javax.swing.JFrame {
         if(usDui.equals("")){
             JOptionPane.showMessageDialog(null, "Actualmente el DUI esta vacio, Ingrese su DUI para poder obtener continuar con el proceso de cambiar su contraseña ", "DUI vacio", JOptionPane.INFORMATION_MESSAGE);       
         }else if(usDui.length() <= 8){
-            JOptionPane.showMessageDialog(null, "El numero de DUI debe tener un total de 9 caracteres", "Dui incompleto", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El numero de DUI debe tener un total de 9 caracteres", "Dui incompleto", JOptionPane.WARNING_MESSAGE);
         }else{
             ResponderPregunta();
             obtenerpregunta();
@@ -294,6 +314,7 @@ public class PreguntaUsuario extends javax.swing.JFrame {
             if (resp==JOptionPane.YES_OPTION){
                 CambiarPass newForm = new CambiarPass();
                 newForm.obtenerDato(usId);
+                newForm.setLocationRelativeTo(null);
                 newForm.setVisible(true);
                 this.dispose();
             }else{
@@ -301,7 +322,7 @@ public class PreguntaUsuario extends javax.swing.JFrame {
                 NuevoDui();
             }
         }else{
-            JOptionPane.showMessageDialog(null, "La actual respuesta no es igual, compruebe que la esta escribiendo de manera correcta", "Respuesta incorrecta", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La respuesta actual no es igual, compruebe que la esta escribiendo de manera correcta", "Respuesta incorrecta", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnRespuestaActionPerformed
 
@@ -349,6 +370,7 @@ public class PreguntaUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel lblDui;
     private javax.swing.JLabel lblId;
     private javax.swing.JLabel lblPregunta;
+    private javax.swing.JLabel lblRepuestaInfo;
     private javax.swing.JLabel lblRespuesta;
     private javax.swing.JLabel lblRespuestaDB;
     private javax.swing.JTextField txtDui;

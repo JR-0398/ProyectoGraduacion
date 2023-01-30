@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -25,7 +26,7 @@ public class CopiaDeSeguridad extends javax.swing.JFrame {
     private void bloquearDatos(){
         txtRutaBU.setEnabled(false);
         btnCrearBU.setEnabled(false);
-        btnCancelarBU.setEnabled(false);  
+        //btnCancelarBU.setEnabled(false);  
     }
     
     private void cambioDatos(){
@@ -40,6 +41,7 @@ public class CopiaDeSeguridad extends javax.swing.JFrame {
      */
     public CopiaDeSeguridad() {
         initComponents();
+        setIconImage(new ImageIcon(getClass().getResource("/images/banana.png")).getImage());
         bloquearDatos();
     }
 
@@ -59,7 +61,9 @@ public class CopiaDeSeguridad extends javax.swing.JFrame {
         btnCrearBU = new javax.swing.JButton();
         btnCancelarBU = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Crear copia de seguridad");
+        setResizable(false);
 
         lblRuta.setText("Ruta para guardar la copia de seguridad");
 
@@ -99,7 +103,7 @@ public class CopiaDeSeguridad extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnCancelarBU, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnRutaUP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

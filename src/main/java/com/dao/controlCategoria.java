@@ -97,7 +97,7 @@ public class controlCategoria extends cConexion {
         }
     }
     
-    public int existeUsuario(String catNombre) {
+    public int existeCategoria(String catNombre) {
         Connection con = conexion();
         PreparedStatement ps;
         ResultSet rs;
@@ -164,5 +164,28 @@ public class controlCategoria extends cConexion {
            System.out.println("Excepciones controladas: "+e.getMessage());
            return false;
         }
-    }  
+    }
+   
+   public int BorrarCategoria(int id_categoria) {
+        Connection con = conexion();
+        PreparedStatement ps;
+        ResultSet rs;
+        
+        String sql = "SELECT count(id_articulo) FROM articulo WHERE id_categoria=?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id_categoria);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            con.close();
+            rs.close();
+            return 1;
+        }catch (SQLException e){
+            Logger.getLogger(ControlUsuario.class.getName()).log(Level.SEVERE, null, e);
+            System.out.println("Excepciones controladas: "+e.getMessage());
+            return 1;
+        }
+    }
 }

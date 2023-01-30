@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,11 +18,13 @@ import javax.swing.JOptionPane;
  */
 public class InicioSesion extends javax.swing.JFrame {
     Connection conn;
+    
     /**
      * Creates new form InicioSesion
      */
     public InicioSesion() {
         initComponents();
+        setIconImage(new ImageIcon(getClass().getResource("/images/banana.png")).getImage());
         cConexion con = new cConexion();
         conn = con.conexion();
     }
@@ -43,15 +46,19 @@ public class InicioSesion extends javax.swing.JFrame {
         lblPass = new javax.swing.JLabel();
         btnRegistrar = new javax.swing.JButton();
         btnIniciar = new javax.swing.JButton();
+        cbxPass = new javax.swing.JCheckBox();
+        btnVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Inicio de sesion");
+        setResizable(false);
 
         pnIniciarSesion.setBackground(new java.awt.Color(205, 242, 205));
         pnIniciarSesion.setForeground(new java.awt.Color(255, 204, 255));
 
         lblNombre.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblNombre.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/perfil.png"))); // NOI18N
-        lblNombre.setText("Inicio de Sesion");
+        lblNombre.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/usuario6.png"))); // NOI18N
+        lblNombre.setText("INICIO DE SESION");
 
         txtDui.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -65,13 +72,13 @@ public class InicioSesion extends javax.swing.JFrame {
             }
         });
 
-        lblDui.setText("Numero de DUI:");
+        lblDui.setText("Numero de DUI");
 
-        lblPass.setText("Contraseña:");
+        lblPass.setText("Contraseña");
 
         btnRegistrar.setBackground(new java.awt.Color(204, 204, 255));
-        btnRegistrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/registrarse.png"))); // NOI18N
-        btnRegistrar.setText("Registrarse");
+        btnRegistrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/contra.png"))); // NOI18N
+        btnRegistrar.setText("¿Olvido su contraseña?");
         btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegistrarActionPerformed(evt);
@@ -79,11 +86,27 @@ public class InicioSesion extends javax.swing.JFrame {
         });
 
         btnIniciar.setBackground(new java.awt.Color(255, 204, 102));
-        btnIniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/entrar.png"))); // NOI18N
-        btnIniciar.setText("Ingresar");
+        btnIniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/login9.png"))); // NOI18N
+        btnIniciar.setText("Ingresar al sistema");
         btnIniciar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnIniciarActionPerformed(evt);
+            }
+        });
+
+        cbxPass.setText("Mostrar contraseña");
+        cbxPass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxPassActionPerformed(evt);
+            }
+        });
+
+        btnVolver.setBackground(new java.awt.Color(204, 204, 255));
+        btnVolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/inventaio.png"))); // NOI18N
+        btnVolver.setText("Volver al inicio");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
             }
         });
 
@@ -91,113 +114,81 @@ public class InicioSesion extends javax.swing.JFrame {
         pnIniciarSesion.setLayout(pnIniciarSesionLayout);
         pnIniciarSesionLayout.setHorizontalGroup(
             pnIniciarSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnIniciarSesionLayout.createSequentialGroup()
-                .addContainerGap(59, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIniciarSesionLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnIniciarSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIniciarSesionLayout.createSequentialGroup()
                         .addGroup(pnIniciarSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblPass, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblDui, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(41, 41, 41)
+                            .addComponent(btnIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRegistrar))
+                        .addGap(116, 116, 116))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIniciarSesionLayout.createSequentialGroup()
+                        .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(114, 114, 114))))
+            .addGroup(pnIniciarSesionLayout.createSequentialGroup()
+                .addGroup(pnIniciarSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnIniciarSesionLayout.createSequentialGroup()
+                        .addGap(67, 67, 67)
                         .addGroup(pnIniciarSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtDui, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(97, 97, 97))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIniciarSesionLayout.createSequentialGroup()
-                        .addComponent(btnIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45)
-                        .addComponent(btnRegistrar)
-                        .addGap(43, 43, 43))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIniciarSesionLayout.createSequentialGroup()
-                        .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(130, 130, 130))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIniciarSesionLayout.createSequentialGroup()
+                                .addComponent(lblDui)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtDui, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnIniciarSesionLayout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addComponent(lblPass)
+                                .addGap(18, 18, 18)
+                                .addGroup(pnIniciarSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cbxPass, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(pnIniciarSesionLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnVolver)))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
         pnIniciarSesionLayout.setVerticalGroup(
             pnIniciarSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnIniciarSesionLayout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addGap(56, 56, 56)
+                .addComponent(lblNombre)
+                .addGap(47, 47, 47)
                 .addGroup(pnIniciarSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDui)
                     .addComponent(txtDui, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39)
+                .addGap(18, 18, 18)
                 .addGroup(pnIniciarSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPass)
                     .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(67, 67, 67)
-                .addGroup(pnIniciarSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnIniciar)
-                    .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbxPass)
+                .addGap(52, 52, 52)
+                .addComponent(btnIniciar)
+                .addGap(18, 18, 18)
+                .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnIniciarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(pnIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnIniciarSesion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(pnIniciarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
-        // TODO add your handling code here:
-        int type_user, usId;
-        String usNombre, usApellido, usCargo;
-        String usDui = txtDui.getText();
-        int cDui = txtDui.getText().length();
-        String usPass = String.valueOf(txtPass.getPassword());
-        
-        if(usDui.equals("") || usPass.equals("")){
-            JOptionPane.showMessageDialog(null, "Verfique la informacion ingresada, ya que uno o ambos datos solicitados estan vacios", "Datos vacios", JOptionPane.ERROR_MESSAGE);
-        }else if(cDui <= 8){
-            JOptionPane.showMessageDialog(null, "El numero de DUI debe ser mayor a 9 caracteres", "Dui incompleto", JOptionPane.ERROR_MESSAGE);
-        }else{
-            String sql = "SELECT id_tipoUsuario, usNombre, usApellido, usCargo, id_usuario FROM Usuario WHERE usDui='"+usDui+"' AND usPasswd='"+usPass+"'";
-            
-            try {
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-                if(rs.next()){
-                    type_user = rs.getInt("id_tipoUsuario");
-                    usNombre = rs.getString("usNombre");
-                    usApellido = rs.getString("usApellido");
-                    usCargo = rs.getNString("usCargo");
-                    usId = rs.getInt("id_usuario");
-                    if(type_user == 1){
-                        JOptionPane.showMessageDialog(null, "Bienvenida/o "+usCargo+", El acceso de: "+usNombre+" "+usApellido+" ha sido verificado con exito", "Inicio de sesion", JOptionPane.INFORMATION_MESSAGE);
-                        MenuAdmin newForm = new MenuAdmin();
-                        newForm.obtenerDatos(type_user, usNombre, usApellido, usDui, usCargo, usId);
-                        newForm.setVisible(true);
-                        this.dispose();
-                    }else if(type_user == 2){
-                        JOptionPane.showMessageDialog(null, "Bienvenida/o "+usCargo+", El acceso de: "+usNombre+" "+usApellido+" se ha verificado", "Inicio de sesion", JOptionPane.INFORMATION_MESSAGE);
-                        Menu newForm = new Menu();
-                        newForm.obtenerDatos(type_user, usNombre, usApellido, usDui, usCargo, usId);
-                        newForm.setVisible(true);
-                        this.dispose();
-                    }
-                }else{
-                    JOptionPane.showMessageDialog(null, "El numero de DUI y la contraseña ingresada son incorrectos, Por favor verfique uno o ambos datos", "Acceso Denegado", JOptionPane.ERROR_MESSAGE);
-                }
-            }catch (SQLException e){
-                JOptionPane.showMessageDialog(null, "Ha ocurrido un error: "+e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }//GEN-LAST:event_btnIniciarActionPerformed
-
-    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-        // TODO add your handling code here:
-        RegistrarUsuario newForm = new RegistrarUsuario();
-        newForm.setVisible(true);
-        //this.dispose();
-    }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void txtDuiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDuiKeyTyped
         // TODO add your handling code here:
@@ -208,7 +199,7 @@ public class InicioSesion extends javax.swing.JFrame {
         if(!Character.isDigit(vDui) && !asciiBS){
             //getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Este campo solo permite ingresar numeros, segun el formato del numero de DUI", "Formato de dato invalido", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Este campo solo permite ingresar numeros, segun el formato del numero de DUI", "Formato de DUI invalido", JOptionPane.INFORMATION_MESSAGE);
         }
         
         if(cDui >= 9){
@@ -224,6 +215,88 @@ public class InicioSesion extends javax.swing.JFrame {
             evt.consume();
         }
     }//GEN-LAST:event_txtPassKeyTyped
+
+    private void cbxPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxPassActionPerformed
+        // TODO add your handling code here:
+        if(cbxPass.isSelected()){
+            txtPass.setEchoChar((char)0);
+        }else{
+            txtPass.setEchoChar('*');
+        }
+    }//GEN-LAST:event_cbxPassActionPerformed
+
+    private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
+        // TODO add your handling code here:
+        int type_user, usId;
+        String usNombre, usApellido, usCargo;
+        String usDui = txtDui.getText();
+        int cDui = txtDui.getText().length();
+        String usPass = String.valueOf(txtPass.getPassword());
+        int cPass = usPass.length();
+        
+
+        if(usDui.equals("") || usPass.equals("")){
+            JOptionPane.showMessageDialog(null, "Verfique la informacion ingresada, ya que uno o ambos datos solicitados estan vacios", "Datos vacios", JOptionPane.ERROR_MESSAGE);
+        }else if(cDui <= 8){
+            JOptionPane.showMessageDialog(null, "El numero de DUI debe tener 9 caracteres", "Dui incompleto", JOptionPane.WARNING_MESSAGE);
+        }else if(cPass <= 7){
+            JOptionPane.showMessageDialog(null, "La contraseña debe tener 8 o mas caracteres", "Contraseña incompleta", JOptionPane.WARNING_MESSAGE);
+        }else{
+            String sql = "SELECT id_tipoUsuario, usNombre, usApellido, usCargo, id_usuario FROM Usuario WHERE usDui='"+usDui+"' AND usPasswd='"+usPass+"'";
+
+            try {
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                if(rs.next()){
+                    type_user = rs.getInt("id_tipoUsuario");
+                    usNombre = rs.getString("usNombre");
+                    usApellido = rs.getString("usApellido");
+                    usCargo = rs.getNString("usCargo");
+                    usId = rs.getInt("id_usuario");
+                    if(type_user == 1){
+                        JOptionPane.showMessageDialog(null, "Bienvenida/o "+usCargo+", El acceso de "+usNombre+" "+usApellido+" ha sido verificado con exito", "Inicio de sesion", JOptionPane.INFORMATION_MESSAGE);
+                        MenuAdmin newForm = new MenuAdmin();
+                        newForm.obtenerDatos(type_user, usNombre, usApellido, usDui, usCargo, usId);
+                        newForm.setVisible(true);
+                        newForm.setLocationRelativeTo(null);
+                        this.dispose();
+                        conn.close();
+                    }else if(type_user == 2){
+                        JOptionPane.showMessageDialog(null, "Bienvenida/o "+usCargo+", El acceso de "+usNombre+" "+usApellido+" se ha verificado", "Inicio de sesion", JOptionPane.INFORMATION_MESSAGE);
+                        Menu newForm = new Menu();
+                        newForm.obtenerDatos(type_user, usNombre, usApellido, usDui, usCargo, usId);
+                        newForm.setVisible(true);
+                        newForm.setLocationRelativeTo(null);
+                        this.dispose();
+                        conn.close();
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(null, "Los datos ingresados son incorrectos, Por favor verfique uno o ambos", "Acceso Denegado", JOptionPane.ERROR_MESSAGE);
+                }
+                //ps.close();
+                //res.close();
+                //conn.close();
+            }catch (SQLException e){
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error: "+e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnIniciarActionPerformed
+
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        // TODO add your handling code here:
+        PreguntaUsuario newForm = new PreguntaUsuario();
+        newForm.setLocationRelativeTo(null);
+        newForm.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        // TODO add your handling code here:
+        InicioArticulos newForm = new InicioArticulos();
+        newForm.setLocationRelativeTo(null);
+        newForm.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnVolverActionPerformed
 
     /**
      * @param args the command line arguments
@@ -263,6 +336,8 @@ public class InicioSesion extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIniciar;
     private javax.swing.JButton btnRegistrar;
+    private javax.swing.JButton btnVolver;
+    private javax.swing.JCheckBox cbxPass;
     private javax.swing.JLabel lblDui;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblPass;

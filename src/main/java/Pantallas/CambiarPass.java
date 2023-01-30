@@ -6,6 +6,7 @@ package Pantallas;
 
 import com.dao.ControlUsuario;
 import com.modelo.usuario;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 /*import db_conexion.cConexion;
 import java.sql.PreparedStatement;
@@ -21,7 +22,7 @@ public class CambiarPass extends javax.swing.JFrame {
     usuario usr = new usuario();
     String usId;
     
-    private void bloquearDatos(){
+    private void hideID(){
         lblId.setVisible(false);
     }
     
@@ -30,7 +31,8 @@ public class CambiarPass extends javax.swing.JFrame {
      */
     public CambiarPass() {
         initComponents();
-        bloquearDatos();
+        setIconImage(new ImageIcon(getClass().getResource("/images/banana.png")).getImage());
+        hideID();
     }
     
     public void obtenerDato(String usId){
@@ -58,6 +60,8 @@ public class CambiarPass extends javax.swing.JFrame {
         cbxMostrarPass2 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Cambiar contraseña");
+        setResizable(false);
 
         lblPass.setText("Nueva contraseña");
 
@@ -123,8 +127,8 @@ public class CambiarPass extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btnCambiarPass)
                                     .addComponent(cbxMostrarPass2))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addContainerGap(31, Short.MAX_VALUE))
+                                .addGap(0, 109, Short.MAX_VALUE)))))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,19 +137,19 @@ public class CambiarPass extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPass)
                     .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbxMostrarPass)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblConfirmPass)
                     .addComponent(txtPass2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbxMostrarPass2)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCambiarPass)
                     .addComponent(lblId))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -153,16 +157,16 @@ public class CambiarPass extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -177,13 +181,14 @@ public class CambiarPass extends javax.swing.JFrame {
         if (pass.equals("") || cPass.equals("")){
             JOptionPane.showMessageDialog(null, "Una o ambas contraseñas estan vacias, ingrese las contraseñas correctamente", "Contraseña/as vacias", JOptionPane.INFORMATION_MESSAGE);
         }else if (pass.length() <= 8){
-            JOptionPane.showMessageDialog(null, "Ambas contraseñas deben tener mas de 8 caracteres", "Formato de contraseñas incorrecto", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ambas contraseñas deben tener al menos 8 caracteres o mas", "Formato de contraseñas incorrecto", JOptionPane.INFORMATION_MESSAGE);
         }else if (pass.equals(cPass)){
             usr.setUsPasswd(pass);
             usr.setId_usuario(usId);
             if (controlUsu.modificarContraUsuario(usr)){
                 JOptionPane.showMessageDialog(null, "La contraseñas se ha cambiado, ingrese con su nueva contraseña al sistema", "Cambio de contraseña", JOptionPane.INFORMATION_MESSAGE);
                 InicioSesion newForm = new InicioSesion();
+                newForm.setLocationRelativeTo(null);
                 newForm.setVisible(true);
                 this.dispose();
             }else{
@@ -214,20 +219,20 @@ public class CambiarPass extends javax.swing.JFrame {
 
     private void cbxMostrarPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxMostrarPassActionPerformed
         // TODO add your handling code here:
-        if (cbxMostrarPass.isSelected()) {
+        if(cbxMostrarPass.isSelected()){
             txtPass.setEchoChar((char)0);
-         } else {
+        }else{
             txtPass.setEchoChar('*');
-         }
+        }
     }//GEN-LAST:event_cbxMostrarPassActionPerformed
 
     private void cbxMostrarPass2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxMostrarPass2ActionPerformed
         // TODO add your handling code here:
-        if (cbxMostrarPass2.isSelected()) {
+        if(cbxMostrarPass2.isSelected()){
             txtPass2.setEchoChar((char)0);
-         } else {
+        }else{
             txtPass2.setEchoChar('*');
-         }
+        }
     }//GEN-LAST:event_cbxMostrarPass2ActionPerformed
 
     /**

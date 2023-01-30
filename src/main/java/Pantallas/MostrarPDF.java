@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -33,7 +34,7 @@ public class MostrarPDF extends javax.swing.JFrame {
 
     public MostrarPDF() {
         initComponents();
-        
+        setIconImage(new ImageIcon(getClass().getResource("/images/banana.png")).getImage());
         tpdf.visualizar_PdfVO(tabla);
         activa_boton(false, false, false);
         txtname.setEnabled(false);
@@ -133,9 +134,10 @@ public class MostrarPDF extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Guardar y Leer PDF");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Control de archivos PDF");
         setBackground(new java.awt.Color(204, 255, 255));
+        setResizable(false);
 
         tabla.setBackground(new java.awt.Color(204, 204, 255));
         tabla.setModel(new javax.swing.table.DefaultTableModel(
